@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   build-and-release:
+    if: ${{ github.repository == 'qortal/Q-Wallets' }}
     runs-on: ubuntu-latest
     env:
       APP_NAME: ${{ github.event.repository.name }}
