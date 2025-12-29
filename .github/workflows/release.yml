@@ -10,6 +10,10 @@ on:
         description: 'The branch to build'
         required: true
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+  
 permissions:
   contents: write
   pull-requests: read
