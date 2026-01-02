@@ -3354,7 +3354,10 @@ export default function QortalWallet() {
             id="qort-address"
             margin="normal"
             value={qortRecipient}
-            onChange={(e) => setQortRecipient(e.target.value.trim())}
+            onChange={(e) => {
+              setQortRecipient(e.target.value.trim());
+              setRecipientTouched(true);
+            }}
             onBlur={onRecipientBlur}
             slotProps={{ htmlInput: { maxLength: 34, minLength: 3 } }}
             fullWidth
