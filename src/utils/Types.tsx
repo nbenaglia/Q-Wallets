@@ -1,3 +1,5 @@
+import { Coin } from "qapp-core";
+
 export type TransactionType =
     | "GENESIS"
     | "PAYMENT"
@@ -54,4 +56,18 @@ export interface SearchTransactionsResponse {
     senderPublicKey: string;
     recipient: string;
     amount: string;
+}
+
+export interface AddressBookEntry {
+    id: string;                    // Unique identifier (UUID or timestamp-based)
+    name: string;                  // Max 50 chars
+    address: string;               // Coin-specific length
+    note: string;                  // Max 200 chars
+    coinType: Coin;                // e.g., 'BTC', 'DOGE', 'LTC'
+    createdAt: number;             // Unix timestamp
+    updatedAt?: number;            // Unix timestamp (optional)
+}
+
+export interface AddressBookStorage {
+    [coinType: string]: AddressBookEntry[];
 }

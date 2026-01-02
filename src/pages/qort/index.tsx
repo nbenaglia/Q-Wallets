@@ -86,6 +86,7 @@ import {
   WalletCard,
 } from '../../styles/page-styles';
 import { SearchTransactionsResponse } from '../../utils/Types.tsx';
+import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -306,9 +307,16 @@ export default function QortalWallet() {
   const emptyRowsAll =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allInfo?.length || 0) : 0;
 
-  const handleOpenAddressBook = async () => {
+  const handleOpenAddressBook = () => {
     setOpenQortAddressBook(true);
-    await new Promise((resolve) => setTimeout(resolve, TIME_SECONDS_2));
+  };
+
+  const handleCloseAddressBook = () => {
+    setOpenQortAddressBook(false);
+  };
+
+  const handleSelectAddress = (address: string, name: string) => {
+    setQortRecipient(address);
     setOpenQortAddressBook(false);
   };
 
@@ -3396,23 +3404,12 @@ export default function QortalWallet() {
         </Box>
       </Dialog>
 
-      <DialogGeneral
-        aria-labelledby="qort-electrum-servers"
+      <AddressBookDialog
         open={openQortAddressBook}
-        keepMounted={false}
-      >
-        <DialogContent>
-          <Typography
-            variant="h5"
-            align="center"
-            sx={{ color: 'text.primary', fontWeight: 700 }}
-          >
-            {t('core:message.generic.coming_soon', {
-              postProcess: 'capitalizeFirstChar',
-            })}
-          </Typography>
-        </DialogContent>
-      </DialogGeneral>
+        onClose={handleCloseAddressBook}
+        coinType={Coin.QORT}
+        onSelectAddress={handleSelectAddress}
+      />
 
       <WalletCard sx={{ p: { xs: 2, md: 3 }, width: '100%' }}>
         <Grid container rowSpacing={{ xs: 2, md: 3 }} columnSpacing={2}>

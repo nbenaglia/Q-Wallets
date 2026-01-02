@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { epochToAgo, timeoutDelay, cropString, copyToClipboard } from '../../common/functions';
+import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -190,9 +191,16 @@ export default function LitecoinWallet() {
       ? Math.max(0, (1 + page) * rowsPerPage - transactionsLtc.length)
       : 0;
 
-  const handleOpenAddressBook = async () => {
+  const handleOpenAddressBook = () => {
     setOpenLtcAddressBook(true);
-    await new Promise((resolve) => setTimeout(resolve, TIME_SECONDS_2));
+  };
+
+  const handleCloseAddressBook = () => {
+    setOpenLtcAddressBook(false);
+  };
+
+  const handleSelectAddress = (address: string, name: string) => {
+    setLtcRecipient(address);
     setOpenLtcAddressBook(false);
   };
 
@@ -956,23 +964,12 @@ export default function LitecoinWallet() {
         <FeeManager coin="LTC" onChange={setInputFee} />
       </Dialog>
 
-      <DialogGeneral
-        aria-labelledby="ltc-electrum-servers"
+      <AddressBookDialog
         open={openLtcAddressBook}
-        keepMounted={false}
-      >
-        <DialogContent>
-          <Typography
-            variant="h5"
-            align="center"
-            sx={{ color: 'text.primary', fontWeight: 700 }}
-          >
-            {t('core:message.generic.coming_soon', {
-              postProcess: 'capitalizeFirstChar',
-            })}
-          </Typography>
-        </DialogContent>
-      </DialogGeneral>
+        onClose={handleCloseAddressBook}
+        coinType={Coin.LTC}
+        onSelectAddress={handleSelectAddress}
+      />
 
       <WalletCard sx={{ p: { xs: 2, md: 3 }, width: '100%' }}>
         <Grid container rowSpacing={{ xs: 2, md: 3 }} columnSpacing={2}>

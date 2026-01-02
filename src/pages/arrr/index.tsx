@@ -5,6 +5,7 @@ import {
   epochToAgo,
   timeoutDelay,
 } from '../../common/functions';
+import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -215,9 +216,16 @@ export default function PirateWallet() {
     setOpenArrrServerChange(false);
   };
 
-  const handleOpenAddressBook = async () => {
+  const handleOpenAddressBook = () => {
     setOpenArrrAddressBook(true);
-    await new Promise((resolve) => setTimeout(resolve, TIME_SECONDS_2));
+  };
+
+  const handleCloseAddressBook = () => {
+    setOpenArrrAddressBook(false);
+  };
+
+  const handleSelectAddress = (address: string, name: string) => {
+    setArrrRecipient(address);
     setOpenArrrAddressBook(false);
   };
 
@@ -852,23 +860,12 @@ export default function PirateWallet() {
 
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
-      <DialogGeneral
-        aria-labelledby="arrr-electrum-servers"
+      <AddressBookDialog
         open={openArrrAddressBook}
-        keepMounted={false}
-      >
-        <DialogContent>
-          <Typography
-            variant="h5"
-            align="center"
-            sx={{ color: 'text.primary', fontWeight: 700 }}
-          >
-            {t('core:message.generic.coming_soon', {
-              postProcess: 'capitalizeFirstChar',
-            })}
-          </Typography>
-        </DialogContent>
-      </DialogGeneral>
+        onClose={handleCloseAddressBook}
+        coinType={Coin.ARRR}
+        onSelectAddress={handleSelectAddress}
+      />
 
       <LightwalletDialog
         onClose={handleCloseArrrLightwallet}

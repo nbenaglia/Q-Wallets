@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react';
 import { epochToAgo, timeoutDelay, cropString, copyToClipboard } from '../../common/functions';
+import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -206,9 +207,16 @@ export default function RavencoinWallet() {
       ? Math.max(0, (1 + page) * rowsPerPage - transactionsRvn.length)
       : 0;
 
-  const handleOpenAddressBook = async () => {
+  const handleOpenAddressBook = () => {
     setOpenRvnAddressBook(true);
-    await new Promise((resolve) => setTimeout(resolve, TIME_SECONDS_2));
+  };
+
+  const handleCloseAddressBook = () => {
+    setOpenRvnAddressBook(false);
+  };
+
+  const handleSelectAddress = (address: string, name: string) => {
+    setRvnRecipient(address);
     setOpenRvnAddressBook(false);
   };
 
@@ -1029,23 +1037,12 @@ export default function RavencoinWallet() {
         </Box>
       </Dialog>
 
-      <DialogGeneral
-        aria-labelledby="rvn-electrum-servers"
+      <AddressBookDialog
         open={openRvnAddressBook}
-        keepMounted={false}
-      >
-        <DialogContent>
-          <Typography
-            variant="h5"
-            align="center"
-            sx={{ color: 'text.primary', fontWeight: 700 }}
-          >
-            {t('core:message.generic.coming_soon', {
-              postProcess: 'capitalizeFirstChar',
-            })}
-          </Typography>
-        </DialogContent>
-      </DialogGeneral>
+        onClose={handleCloseAddressBook}
+        coinType={Coin.RVN}
+        onSelectAddress={handleSelectAddress}
+      />
 
       <WalletCard sx={{ p: { xs: 2, md: 3 }, width: '100%' }}>
         <Grid container rowSpacing={{ xs: 2, md: 3 }} columnSpacing={2}>
