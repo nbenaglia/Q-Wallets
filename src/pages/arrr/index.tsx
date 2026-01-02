@@ -63,6 +63,7 @@ import { useTranslation } from 'react-i18next';
 import { Refresh } from '@mui/icons-material';
 import {
   ARRR_FEE,
+  DECIMAL_ROUND_UP,
   EMPTY_STRING,
   TIME_MINUTES_2,
   TIME_MINUTES_3,
@@ -275,7 +276,7 @@ export default function PirateWallet() {
   const handleSendMaxArrr = () => {
     let maxArrrAmount = 0;
     let WalletBalanceArrr = parseFloat(walletBalanceArrr);
-    maxArrrAmount = WalletBalanceArrr - 0.0001;
+    maxArrrAmount = WalletBalanceArrr - ARRR_FEE;
     if (maxArrrAmount <= 0) {
       setArrrAmount(0);
     } else {
@@ -728,7 +729,7 @@ export default function PirateWallet() {
                           {cropString(input.address)}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(8)}
+                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -749,7 +750,7 @@ export default function PirateWallet() {
                           {cropString(output.address)}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(8)}
+                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -785,18 +786,18 @@ export default function PirateWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box></Box>
@@ -1132,7 +1133,7 @@ export default function PirateWallet() {
             align="center"
             sx={{ color: 'text.primary', fontWeight: 700 }}
           >
-            {(walletBalanceArrr - 0.0001).toFixed(8) + ' ARRR'}
+            {(walletBalanceArrr - 0.0001).toFixed(DECIMAL_ROUND_UP) + ' ARRR'}
           </Typography>
           <Box style={{ marginInlineStart: '15px' }}>
             <Button

@@ -2,6 +2,9 @@
 export const EMPTY_STRING: string = '';
 export const ONE_SPACE: string = ' ';
 
+// Number
+export const DECIMAL_ROUND_UP: number = 8;
+
 // QORT section
 export const QORT_1_UNIT: number = 100000000;
 

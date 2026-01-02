@@ -52,6 +52,7 @@ import { FeeManager } from '../../components/FeeManager';
 import { useTranslation } from 'react-i18next';
 import {
   BTC_FEE,
+  DECIMAL_ROUND_UP,
   EMPTY_STRING,
   TIME_MINUTES_3,
   TIME_MINUTES_5,
@@ -181,7 +182,7 @@ export default function BitcoinWallet() {
     null
   );
 
-  const btcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(8);
+  const btcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(DECIMAL_ROUND_UP);
   const estimatedFeeCalculated = +btcFeeCalculated * BTC_FEE;
   const emptyRows =
     page > 0
@@ -536,7 +537,7 @@ export default function BitcoinWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(8)}
+                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -557,7 +558,7 @@ export default function BitcoinWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(8)}
+                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -590,22 +591,22 @@ export default function BitcoinWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box sx={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box sx={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box sx={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>

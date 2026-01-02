@@ -51,6 +51,7 @@ import {
 import coinLogoRVN from '../../assets/rvn.png';
 import { useTranslation } from 'react-i18next';
 import {
+  DECIMAL_ROUND_UP,
   EMPTY_STRING,
   RVN_FEE,
   TIME_MINUTES_3,
@@ -402,7 +403,7 @@ export default function RavencoinWallet() {
 
   const handleSendMaxRvn = () => {
     const maxRvnAmount = parseFloat(
-      (walletBalanceRvn - (rvnFee * 1000) / 1e8).toFixed(8)
+      (walletBalanceRvn - (rvnFee * 1000) / 1e8).toFixed(DECIMAL_ROUND_UP)
     );
     if (maxRvnAmount <= 0) {
       setRvnAmount(0);
@@ -413,7 +414,7 @@ export default function RavencoinWallet() {
 
   const sendRvnRequest = async () => {
     setOpenTxRvnSubmit(true);
-    const rvnFeeCalculated = Number(rvnFee / 1e8).toFixed(8);
+    const rvnFeeCalculated = Number(rvnFee / 1e8).toFixed(DECIMAL_ROUND_UP);
     try {
       const sendRequest = await qortalRequest({
         action: 'SEND_COIN',
@@ -564,7 +565,7 @@ export default function RavencoinWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(8)}
+                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -585,7 +586,7 @@ export default function RavencoinWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(8)}
+                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -618,22 +619,22 @@ export default function RavencoinWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
@@ -895,7 +896,7 @@ export default function RavencoinWallet() {
           >
             {(() => {
               const newMaxRvnAmount = parseFloat(
-                (walletBalanceRvn - (rvnFee * 1000) / 1e8).toFixed(8)
+                (walletBalanceRvn - (rvnFee * 1000) / 1e8).toFixed(DECIMAL_ROUND_UP)
               );
               if (newMaxRvnAmount < 0) {
                 return Number(0.0) + ' RVN';
