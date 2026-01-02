@@ -50,6 +50,7 @@ import {
 import coinLogoLTC from '../../assets/ltc.png';
 import { useTranslation } from 'react-i18next';
 import {
+  DECIMAL_ROUND_UP,
   EMPTY_STRING,
   LTC_FEE,
   TIME_MINUTES_3,
@@ -181,7 +182,7 @@ export default function LitecoinWallet() {
     null
   );
 
-  const ltcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(8);
+  const ltcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(DECIMAL_ROUND_UP);
   const estimatedFeeCalculated = +ltcFeeCalculated * LTC_FEE;
 
   const emptyRows =
@@ -540,7 +541,7 @@ export default function LitecoinWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(8)}
+                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -561,7 +562,7 @@ export default function LitecoinWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(8)}
+                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -594,22 +595,22 @@ export default function LitecoinWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>

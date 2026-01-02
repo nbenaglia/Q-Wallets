@@ -51,6 +51,7 @@ import {
 import coinLogoDGB from '../../assets/dgb.png';
 import { useTranslation } from 'react-i18next';
 import {
+  DECIMAL_ROUND_UP,
   DGB_FEE,
   EMPTY_STRING,
   TIME_MINUTES_3,
@@ -399,7 +400,7 @@ export default function DigibyteWallet() {
 
   const handleSendMaxDgb = () => {
     const maxDgbAmount = parseFloat(
-      (walletBalanceDgb - (dgbFee * 1000) / 1e8).toFixed(8)
+      (walletBalanceDgb - (dgbFee * 1000) / 1e8).toFixed(DECIMAL_ROUND_UP)
     );
     if (maxDgbAmount <= 0) {
       setDgbAmount(0);
@@ -410,7 +411,7 @@ export default function DigibyteWallet() {
 
   const sendDgbRequest = async () => {
     setOpenTxDgbSubmit(true);
-    const dgbFeeCalculated = Number(dgbFee / 1e8).toFixed(8);
+    const dgbFeeCalculated = Number(dgbFee / 1e8).toFixed(DECIMAL_ROUND_UP);
     try {
       const sendRequest = await qortalRequest({
         action: 'SEND_COIN',
@@ -561,7 +562,7 @@ export default function DigibyteWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(8)}
+                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -582,7 +583,7 @@ export default function DigibyteWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(8)}
+                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                         </span>
                       </Box>
                     ))}
@@ -615,22 +616,22 @@ export default function DigibyteWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(8)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(8)}
+                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
                       </Box>
                     )}
                   </StyledTableCell>
@@ -893,7 +894,7 @@ export default function DigibyteWallet() {
           >
             {(() => {
               const newMaxDgbAmount = parseFloat(
-                (walletBalanceDgb - (dgbFee * 1000) / 1e8).toFixed(8)
+                (walletBalanceDgb - (dgbFee * 1000) / 1e8).toFixed(DECIMAL_ROUND_UP)
               );
               if (newMaxDgbAmount < 0) {
                 return Number(0.0) + ' DGB';
