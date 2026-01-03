@@ -225,7 +225,12 @@ export default function PirateWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setArrrRecipient(address);
+    setArrrAmount(0);
+    setArrrMemo(EMPTY_STRING);
     setOpenArrrAddressBook(false);
+    setOpenArrrSend(true);
+    setAddressFormatError(false);
+    setOpenSendArrrError(false);
   };
 
   const handleOpenArrrSend = () => {

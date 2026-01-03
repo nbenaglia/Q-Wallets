@@ -216,7 +216,12 @@ export default function DigibyteWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setDgbRecipient(address);
+    setDgbAmount(0);
+    setDgbFee(DGB_FEE);
     setOpenDgbAddressBook(false);
+    setOpenDgbSend(true);
+    setAddressFormatError(false);
+    setOpenSendDgbError(false);
   };
 
   const handleOpenDgbSend = () => {

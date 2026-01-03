@@ -316,7 +316,13 @@ export default function QortalWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setQortRecipient(address);
+    setQortAmount(0);
     setOpenQortAddressBook(false);
+    setOpenQortSend(true);
+    setAmountError(null);
+    setAmountTouched(false);
+    setRecipientError(null);
+    setRecipientTouched(false);
   };
 
   const handleChange = (_event: SyntheticEvent, newValue: string) => {

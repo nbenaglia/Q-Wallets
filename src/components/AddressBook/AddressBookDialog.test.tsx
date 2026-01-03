@@ -123,6 +123,57 @@ describe('AddressBookDialog', () => {
     });
   });
 
+  describe('Use Address', () => {
+    it('should call onSelectAddress with correct address and name when "Use" button is clicked', async () => {
+      const user = userEvent.setup();
+
+      // Add a test address
+      addAddress({
+        name: 'Test User',
+        address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+        note: 'Test note',
+        coinType: Coin.BTC,
+      });
+
+      render(
+        <AddressBookDialog
+          open={true}
+          onClose={mockOnClose}
+          coinType={Coin.BTC}
+          onSelectAddress={mockOnSelectAddress}
+        />
+      );
+
+      // Find and click the "Use" button
+      const useButton = screen.getByRole('button', { name: /use/i });
+      await user.click(useButton);
+
+      // Verify onSelectAddress was called with correct parameters
+      expect(mockOnSelectAddress).toHaveBeenCalledWith('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', 'Test User');
+    });
+
+    it('should not show "Use" button when onSelectAddress is not provided', () => {
+      // Add a test address
+      addAddress({
+        name: 'Test User',
+        address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+        note: 'Test note',
+        coinType: Coin.BTC,
+      });
+
+      render(
+        <AddressBookDialog
+          open={true}
+          onClose={mockOnClose}
+          coinType={Coin.BTC}
+        />
+      );
+
+      // "Use" button should not be present
+      expect(screen.queryByRole('button', { name: /use/i })).not.toBeInTheDocument();
+    });
+  });
+
   describe('Pagination', () => {
     beforeEach(() => {
       localStorage.clear();

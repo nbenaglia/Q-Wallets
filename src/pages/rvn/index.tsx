@@ -216,7 +216,14 @@ export default function RavencoinWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setRvnRecipient(address);
+    setRvnAmount(0);
+    setRvnFee(RVN_FEE);
     setOpenRvnAddressBook(false);
+    setOpenRvnSend(true);
+    setAddressFormatError(false);
+    setWalletInfoError(null);
+    setWalletBalanceError(null);
+    setOpenSendRvnError(false);
   };
 
   const handleOpenRvnSend = () => {

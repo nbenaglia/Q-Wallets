@@ -200,7 +200,13 @@ export default function LitecoinWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setLtcRecipient(address);
+    setLtcAmount(0);
     setOpenLtcAddressBook(false);
+    setOpenLtcSend(true);
+    setAddressFormatError(false);
+    setOpenSendLtcError(false);
+    setWalletInfoError(null);
+    setWalletBalanceError(null);
   };
 
   const handleOpenLtcSend = () => {

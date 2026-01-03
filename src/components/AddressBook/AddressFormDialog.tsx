@@ -161,7 +161,7 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
 
   return (
     <DialogGeneral open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle sx={{textAlign: 'center'}} variant="h4">
         {isEditMode
           ? t('core:address_book_edit', {
               postProcess: 'capitalizeFirstChar',

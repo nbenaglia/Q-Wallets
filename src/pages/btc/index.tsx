@@ -199,7 +199,12 @@ export default function BitcoinWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setBtcRecipient(address);
+    setBtcAmount(0);
     setOpenBtcAddressBook(false);
+    setOpenBtcSend(true);
+    setAddressFormatError(false);
+    setOpenSendBtcError(false);
+    setWalletBalanceError(null);
   };
 
   const handleOpenBtcSend = () => {

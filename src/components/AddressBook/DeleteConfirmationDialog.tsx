@@ -26,13 +26,13 @@ export const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> =
 
   return (
     <DialogGeneral open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>
+      <DialogTitle sx={{textAlign: 'center'}} variant="h4">
         {t('core:address_book_delete', {
           postProcess: 'capitalizeFirstChar',
         })}
       </DialogTitle>
       <DialogContent>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={{textAlign: 'center'}}>
           {t('core:address_book_delete_confirm', {
             name: entryName,
             postProcess: 'capitalizeFirstChar',

@@ -201,7 +201,11 @@ export default function DogecoinWallet() {
 
   const handleSelectAddress = (address: string, _name: string) => {
     setDogeRecipient(address);
+    setDogeAmount(0);
     setOpenDogeAddressBook(false);
+    setOpenDogeSend(true);
+    setAddressFormatError(false);
+    setOpenSendDogeError(false);
   };
 
   const handleOpenDogeSend = () => {
