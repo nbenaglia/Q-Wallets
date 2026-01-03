@@ -22,7 +22,7 @@
   "address_book_title": "address book - {{coinType}}",
   "address_book_empty": "no addresses saved yet",
   "address_book_add_new": "add new address",
-  "address_book_search": "search by name or address",
+  "address_book_search": "search by name, address or note",
   "address_book_name": "name",
   "address_book_address": "address",
   "address_book_note": "note",

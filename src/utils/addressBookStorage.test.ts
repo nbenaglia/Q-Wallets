@@ -365,6 +365,18 @@ describe('addressBookStorage', () => {
       expect(result[0].name).toBe('Bob Exchange');
     });
 
+    it('should filter by note (case-insensitive)', () => {
+      const result = searchAddresses(Coin.BTC, 'exchange');
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('Bob Exchange');
+    });
+
+    it('should filter by note with partial match', () => {
+      const result = searchAddresses(Coin.BTC, 'storage');
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('Charlie Savings');
+    });
+
     it('should return partial matches', () => {
       const result = searchAddresses(Coin.BTC, 'a');
       expect(result.length).toBeGreaterThan(0);

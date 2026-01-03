@@ -166,7 +166,7 @@ export const deleteAddress = (id: string, coinType: Coin): boolean => {
 };
 
 /**
- * Search/filter addresses by name or address
+ * Search/filter addresses by name, address or note
  * Returns filtered and sorted results
  */
 export const searchAddresses = (
@@ -182,10 +182,11 @@ export const searchAddresses = (
 
     const lowerQuery = query.toLowerCase();
 
-    // Filter by name or address (case-insensitive, partial match)
+    // Filter by name, address or note (case-insensitive, partial match)
     const filtered = addresses.filter(entry =>
       entry.name.toLowerCase().includes(lowerQuery) ||
-      entry.address.toLowerCase().includes(lowerQuery)
+      entry.address.toLowerCase().includes(lowerQuery) ||
+      entry.note.toLowerCase().includes(lowerQuery)
     );
 
     // Results are already sorted from getAddressBook
