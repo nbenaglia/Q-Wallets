@@ -322,7 +322,7 @@ export default function QortalWallet() {
     setAmountError(null);
     setAmountTouched(false);
     setRecipientError(null);
-    setRecipientTouched(false);
+    setRecipientTouched(true); // Trigger validation for QORT addresses
   };
 
   const handleChange = (_event: SyntheticEvent, newValue: string) => {
