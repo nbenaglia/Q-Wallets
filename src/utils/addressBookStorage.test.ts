@@ -8,6 +8,10 @@ import {
   searchAddresses,
 } from './addressBookStorage';
 import { AddressBookEntry } from './Types';
+import {
+  ADDRESSBOOK_NAME_LENGTH,
+  ADDRESSBOOK_NOTE_LENGTH,
+} from '../common/constants';
 
 describe('addressBookStorage', () => {
   beforeEach(() => {
@@ -140,7 +144,7 @@ describe('addressBookStorage', () => {
     });
 
     it('should throw error for name exceeding 50 characters', () => {
-      const longName = 'a'.repeat(51);
+      const longName = 'a'.repeat(ADDRESSBOOK_NAME_LENGTH + 1);
       expect(() =>
         addAddress({
           name: longName,
@@ -152,7 +156,7 @@ describe('addressBookStorage', () => {
     });
 
     it('should throw error for note exceeding 200 characters', () => {
-      const longNote = 'a'.repeat(201);
+      const longNote = 'a'.repeat(ADDRESSBOOK_NOTE_LENGTH + 1);
       expect(() =>
         addAddress({
           name: 'Test',
@@ -217,7 +221,9 @@ describe('addressBookStorage', () => {
     });
 
     it('should return null for non-existent ID', () => {
-      const result = updateAddress('non-existent-id', Coin.BTC, { name: 'Test' });
+      const result = updateAddress('non-existent-id', Coin.BTC, {
+        name: 'Test',
+      });
       expect(result).toBeNull();
     });
 
@@ -229,7 +235,7 @@ describe('addressBookStorage', () => {
         coinType: Coin.BTC,
       });
 
-      const longName = 'a'.repeat(51);
+      const longName = 'a'.repeat(ADDRESSBOOK_NAME_LENGTH + 1);
       expect(() =>
         updateAddress(original.id, Coin.BTC, { name: longName })
       ).toThrow('Name must be 50 characters or less');
@@ -243,7 +249,7 @@ describe('addressBookStorage', () => {
         coinType: Coin.BTC,
       });
 
-      const longNote = 'a'.repeat(201);
+      const longNote = 'a'.repeat(ADDRESSBOOK_NOTE_LENGTH + 1);
       expect(() =>
         updateAddress(original.id, Coin.BTC, { note: longNote })
       ).toThrow('Note must be 200 characters or less');

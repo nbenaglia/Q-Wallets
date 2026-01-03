@@ -1,5 +1,6 @@
 import { Coin } from 'qapp-core';
 import { AddressBookEntry } from './Types';
+import { ADDRESSBOOK_NAME_LENGTH, ADDRESSBOOK_NOTE_LENGTH } from '../common/constants';
 
 const STORAGE_KEY_PREFIX = 'q-wallets-addressbook';
 
@@ -43,12 +44,12 @@ export const addAddress = (
 ): AddressBookEntry => {
   try {
     // Validate name length
-    if (entry.name.length > 50) {
+    if (entry.name.length > ADDRESSBOOK_NAME_LENGTH) {
       throw new Error('Name must be 50 characters or less');
     }
 
     // Validate note length
-    if (entry.note.length > 200) {
+    if (entry.note.length > ADDRESSBOOK_NOTE_LENGTH) {
       throw new Error('Note must be 200 characters or less');
     }
 
@@ -89,12 +90,12 @@ export const updateAddress = (
 ): AddressBookEntry | null => {
   try {
     // Validate name length if provided
-    if (updates.name && updates.name.length > 50) {
+    if (updates.name && updates.name.length > ADDRESSBOOK_NAME_LENGTH) {
       throw new Error('Name must be 50 characters or less');
     }
 
     // Validate note length if provided
-    if (updates.note && updates.note.length > 200) {
+    if (updates.note && updates.note.length > ADDRESSBOOK_NOTE_LENGTH) {
       throw new Error('Note must be 200 characters or less');
     }
 
