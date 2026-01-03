@@ -183,7 +183,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
               edge="end"
               color="inherit"
               onClick={onClose}
-              aria-label={t('core:close', { postProcess: 'capitalizeFirstChar' })}
+              aria-label={t('core:action.close', { postProcess: 'capitalizeFirstChar' })}
             >
               <Close />
             </IconButton>
