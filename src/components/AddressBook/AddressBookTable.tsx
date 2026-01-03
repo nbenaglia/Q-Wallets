@@ -162,22 +162,22 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
         <Table>
           <TableHead>
             <TableRow>
-              <StyledTableCell>
+              <StyledTableCell sx={{ width: '15%' }}>
                 {t('core:address_book_name', {
                   postProcess: 'capitalizeFirstChar',
                 })}
               </StyledTableCell>
-              <StyledTableCell>
+              <StyledTableCell sx={{ width: '25%' }}>
                 {t('core:address_book_address', {
                   postProcess: 'capitalizeFirstChar',
                 })}
               </StyledTableCell>
-              <StyledTableCell>
+              <StyledTableCell sx={{ width: '40%' }}>
                 {t('core:address_book_note', {
                   postProcess: 'capitalizeFirstChar',
                 })}
               </StyledTableCell>
-              <StyledTableCell align="right">
+              <StyledTableCell align="right" sx={{ width: '20%' }}>
                 {t('core:address_book_actions', {
                   postProcess: 'capitalizeFirstChar',
                 })}
@@ -224,7 +224,7 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
               </StyledTableCell>
               <StyledTableCell>
                 <Tooltip title={entry.note || EMPTY_STRING} placement="top">
-                  <span>{entry.note ? cropString(entry.note) : '-'}</span>
+                  <span>{entry.note ? cropString(entry.note, 50) : '-'}</span>
                 </Tooltip>
               </StyledTableCell>
               <StyledTableCell align="right">

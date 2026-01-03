@@ -54,9 +54,10 @@ export function timeoutDelay(delay: number) {
   return new Promise((res) => setTimeout(res, delay));
 }
 
-export function cropString(str: string) {
-  return str.length > 24
-    ? str.substring(0, 8) + '...' + str.substring(str.length - 8)
+export function cropString(str: string, max_length: number = 24) {
+  let one_third: number = max_length / 3;
+  return str.length > max_length
+    ? str.substring(0, one_third) + '...' + str.substring(str.length - one_third)
     : str;
 }
 
