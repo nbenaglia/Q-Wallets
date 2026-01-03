@@ -27,6 +27,7 @@ import {
 import { AddressBookTable } from './AddressBookTable';
 import { AddressFormDialog } from './AddressFormDialog';
 import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
+import { EMPTY_STRING, ADDRESS_BOOK_ROWS_PER_PAGE } from '../../common/constants';
 
 interface AddressBookDialogProps {
   open: boolean;
@@ -46,11 +47,13 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const [entries, setEntries] = useState<AddressBookEntry[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(EMPTY_STRING);
   const [openForm, setOpenForm] = useState(false);
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<AddressBookEntry | undefined>(undefined);
   const [deletingEntry, setDeletingEntry] = useState<AddressBookEntry | undefined>(undefined);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(ADDRESS_BOOK_ROWS_PER_PAGE);
 
   // Load entries when dialog opens or coinType changes
   useEffect(() => {
@@ -67,6 +70,8 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
     } else {
       loadEntries();
     }
+    // Reset to first page when search query changes
+    setPage(0);
   }, [searchQuery, coinType]);
 
   const loadEntries = () => {
@@ -95,6 +100,13 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       loadEntries();
       setOpenDeleteConfirm(false);
       setDeletingEntry(undefined);
+
+      // Adjust page if we deleted the last item on the current page
+      const newTotalEntries = entries.length - 1;
+      const maxPage = Math.max(0, Math.ceil(newTotalEntries / rowsPerPage) - 1);
+      if (page > maxPage) {
+        setPage(maxPage);
+      }
     }
   };
 
@@ -140,6 +152,15 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
     setSearchQuery(e.target.value);
   };
 
+  const handlePageChange = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <>
       <Dialog
@@ -152,7 +173,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       >
         <AppBar sx={{ position: 'relative' }}>
           <Toolbar>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            <Typography sx={{ ml: 2, flex: 1, textAlign: 'center' }} variant="h4" component="div">
               {t('core:address_book_title', {
                 coinType: coinType,
                 postProcess: 'capitalizeFirstChar',
@@ -224,6 +245,10 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
                 onEdit={handleEdit}
                 onDelete={handleDeleteClick}
                 onUse={onSelectAddress ? handleUse : undefined}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
               />
             )}
           </Box>
@@ -244,7 +269,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
         open={openDeleteConfirm}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        entryName={deletingEntry?.name || ''}
+        entryName={deletingEntry?.name || EMPTY_STRING}
       />
     </>
   );

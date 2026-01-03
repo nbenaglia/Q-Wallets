@@ -76,7 +76,6 @@ import {
 } from '../../common/constants';
 import {
   CustomWidthTooltip,
-  DialogGeneral,
   LightwalletDialog,
   SlideTransition,
   StyledTableCell,
@@ -224,7 +223,7 @@ export default function PirateWallet() {
     setOpenArrrAddressBook(false);
   };
 
-  const handleSelectAddress = (address: string, name: string) => {
+  const handleSelectAddress = (address: string, _name: string) => {
     setArrrRecipient(address);
     setOpenArrrAddressBook(false);
   };

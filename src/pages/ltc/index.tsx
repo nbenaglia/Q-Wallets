@@ -62,7 +62,6 @@ import {
 } from '../../common/constants';
 import {
   CustomWidthTooltip,
-  DialogGeneral,
   SlideTransition,
   StyledTableCell,
   StyledTableRow,
@@ -199,7 +198,7 @@ export default function LitecoinWallet() {
     setOpenLtcAddressBook(false);
   };
 
-  const handleSelectAddress = (address: string, name: string) => {
+  const handleSelectAddress = (address: string, _name: string) => {
     setLtcRecipient(address);
     setOpenLtcAddressBook(false);
   };

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { DialogGeneral } from '../../styles/page-styles';
 import { AddressBookEntry } from '../../utils/Types';
 import { validateAddress } from '../../utils/addressValidation';
+import { ADDRESSBOOK_NAME_LENGTH, ADDRESSBOOK_NOTE_LENGTH, EMPTY_STRING } from '../../common/constants';
 
 interface AddressFormDialogProps {
   open: boolean;
@@ -30,13 +31,13 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
 }) => {
   const { t } = useTranslation(['core']);
 
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [note, setNote] = useState('');
+  const [name, setName] = useState(EMPTY_STRING);
+  const [address, setAddress] = useState(EMPTY_STRING);
+  const [note, setNote] = useState(EMPTY_STRING);
 
-  const [nameError, setNameError] = useState('');
-  const [addressError, setAddressError] = useState('');
-  const [noteError, setNoteError] = useState('');
+  const [nameError, setNameError] = useState(EMPTY_STRING);
+  const [addressError, setAddressError] = useState(EMPTY_STRING);
+  const [noteError, setNoteError] = useState(EMPTY_STRING);
 
   const isEditMode = !!entry;
 
@@ -49,14 +50,14 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
         setNote(entry.note);
       } else {
         // Reset form for new entry
-        setName('');
-        setAddress('');
-        setNote('');
+        setName(EMPTY_STRING);
+        setAddress(EMPTY_STRING);
+        setNote(EMPTY_STRING);
       }
       // Clear errors when dialog opens
-      setNameError('');
-      setAddressError('');
-      setNoteError('');
+      setNameError(EMPTY_STRING);
+      setAddressError(EMPTY_STRING);
+      setNoteError(EMPTY_STRING);
     }
   }, [open, entry]);
 
@@ -69,7 +70,7 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
       );
       return false;
     }
-    if (value.length > 50) {
+    if (value.length > ADDRESSBOOK_NAME_LENGTH) {
       setNameError(
         t('core:address_book_name_max_length', {
           postProcess: 'capitalizeFirstChar',
@@ -77,7 +78,7 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
       );
       return false;
     }
-    setNameError('');
+    setNameError(EMPTY_STRING);
     return true;
   };
 
@@ -99,20 +100,21 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
       );
       return false;
     }
-    setAddressError('');
+    setAddressError(EMPTY_STRING);
     return true;
   };
 
   const validateNote = (value: string): boolean => {
-    if (value.length > 200) {
+    if (value.length > ADDRESSBOOK_NOTE_LENGTH) {
       setNoteError(
         t('core:address_book_note_max_length', {
+          max_note: ADDRESSBOOK_NOTE_LENGTH,
           postProcess: 'capitalizeFirstChar',
         })
       );
       return false;
     }
-    setNoteError('');
+    setNoteError(EMPTY_STRING);
     return true;
   };
 
@@ -151,8 +153,8 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
   };
 
   const isFormValid =
-    name.trim() !== '' &&
-    address.trim() !== '' &&
+    name.trim() !== EMPTY_STRING &&
+    address.trim() !== EMPTY_STRING &&
     !nameError &&
     !addressError &&
     !noteError;
@@ -182,16 +184,19 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
             error={!!nameError}
             helperText={
               nameError || (
-                <Box component="span" sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box
+                  component="span"
+                  sx={{ display: 'flex', justifyContent: 'space-between' }}
+                >
                   <span></span>
-                  <span style={{ fontSize: '0.75rem' }}>
-                    {name.length}/50
-                  </span>
+                  <span style={{ fontSize: '0.75rem' }}>{name.length}/{ADDRESSBOOK_NAME_LENGTH}</span>
                 </Box>
               )
             }
-            inputProps={{
-              maxLength: 50,
+            slotProps={{
+              htmlInput: {
+                maxLength: ADDRESSBOOK_NAME_LENGTH,
+              },
             }}
           />
 
@@ -219,18 +224,21 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
             error={!!noteError}
             helperText={
               noteError || (
-                <Box component="span" sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box
+                  component="span"
+                  sx={{ display: 'flex', justifyContent: 'space-between' }}
+                >
                   <span></span>
-                  <span style={{ fontSize: '0.75rem' }}>
-                    {note.length}/200
-                  </span>
+                  <span style={{ fontSize: '0.75rem' }}>{note.length}/{ADDRESSBOOK_NOTE_LENGTH}</span>
                 </Box>
               )
             }
             multiline
-            rows={3}
-            inputProps={{
-              maxLength: 200,
+            rows={5}
+            slotProps={{
+              htmlInput: {
+                maxLength: ADDRESSBOOK_NOTE_LENGTH,
+              },
             }}
           />
         </Box>

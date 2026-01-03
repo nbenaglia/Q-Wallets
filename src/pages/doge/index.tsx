@@ -62,7 +62,6 @@ import {
 } from '../../common/constants';
 import {
   CustomWidthTooltip,
-  DialogGeneral,
   SlideTransition,
   StyledTableCell,
   StyledTableRow,
@@ -200,7 +199,7 @@ export default function DogecoinWallet() {
     setOpenDogeAddressBook(false);
   };
 
-  const handleSelectAddress = (address: string, name: string) => {
+  const handleSelectAddress = (address: string, _name: string) => {
     setDogeRecipient(address);
     setOpenDogeAddressBook(false);
   };

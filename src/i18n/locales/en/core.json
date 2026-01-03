@@ -37,7 +37,7 @@
   "address_book_name_max_length": "name must be 50 characters or less",
   "address_book_address_required": "address is required",
   "address_book_address_invalid": "invalid {{coinType}} address format",
-  "address_book_note_max_length": "note must be 200 characters or less",
+  "address_book_note_max_length": "note must be {{ max_note }} characters or less",
   "address_book_added": "address added successfully",
   "address_book_updated": "address updated successfully",
   "address_book_deleted": "address deleted successfully",

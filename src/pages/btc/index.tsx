@@ -63,7 +63,6 @@ import {
 } from '../../common/constants';
 import {
   CustomWidthTooltip,
-  DialogGeneral,
   SlideTransition,
   StyledTableCell,
   StyledTableRow,
@@ -198,7 +197,7 @@ export default function BitcoinWallet() {
     setOpenBtcAddressBook(false);
   };
 
-  const handleSelectAddress = (address: string, name: string) => {
+  const handleSelectAddress = (address: string, _name: string) => {
     setBtcRecipient(address);
     setOpenBtcAddressBook(false);
   };

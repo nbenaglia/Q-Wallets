@@ -5,6 +5,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TablePagination,
   Paper,
   IconButton,
   Box,
@@ -17,12 +18,17 @@ import { useTranslation } from 'react-i18next';
 import { StyledTableCell } from '../../styles/page-styles';
 import { AddressBookEntry } from '../../utils/Types';
 import { copyToClipboard, cropString } from '../../common/functions';
+import { EMPTY_STRING } from '../../common/constants';
 
 interface AddressBookTableProps {
   entries: AddressBookEntry[];
   onEdit: (entry: AddressBookEntry) => void;
   onDelete: (entry: AddressBookEntry) => void;
   onUse?: (entry: AddressBookEntry) => void;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (event: unknown, newPage: number) => void;
+  onRowsPerPageChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const AddressBookTable: React.FC<AddressBookTableProps> = ({
@@ -30,11 +36,21 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
   onEdit,
   onDelete,
   onUse,
+  page,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
 }) => {
   const { t } = useTranslation(['core']);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Calculate paginated entries
+  const paginatedEntries = entries.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   const handleCopy = async (address: string, id: string) => {
     try {
@@ -49,8 +65,9 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
   // Responsive rendering for mobile
   if (isMobile) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {entries.map((entry) => (
+      <Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {paginatedEntries.map((entry) => (
           <Paper
             key={entry.id}
             elevation={2}
@@ -66,7 +83,7 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
                   alignItems: 'center',
                   gap: 1,
                   color: 'text.secondary',
-                  fontSize: '0.875rem',
+                  fontSize: '0.875rem'
                 }}
               >
                 <span>{cropString(entry.address)}</span>
@@ -122,40 +139,53 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
             </Box>
           </Paper>
         ))}
+        </Box>
+        <TablePagination
+          component="div"
+          count={entries.length}
+          page={page}
+          onPageChange={onPageChange}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={onRowsPerPageChange}
+          labelRowsPerPage={t('core:rows_per_page', {
+            postProcess: 'capitalizeFirstChar',
+          })}
+        />
       </Box>
     );
   }
 
   // Desktop table view
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>
-              {t('core:address_book_name', {
-                postProcess: 'capitalizeFirstChar',
-              })}
-            </StyledTableCell>
-            <StyledTableCell>
-              {t('core:address_book_address', {
-                postProcess: 'capitalizeFirstChar',
-              })}
-            </StyledTableCell>
-            <StyledTableCell>
-              {t('core:address_book_note', {
-                postProcess: 'capitalizeFirstChar',
-              })}
-            </StyledTableCell>
-            <StyledTableCell align="right">
-              {t('core:address_book_actions', {
-                postProcess: 'capitalizeFirstChar',
-              })}
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {entries.map((entry) => (
+    <Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>
+                {t('core:address_book_name', {
+                  postProcess: 'capitalizeFirstChar',
+                })}
+              </StyledTableCell>
+              <StyledTableCell>
+                {t('core:address_book_address', {
+                  postProcess: 'capitalizeFirstChar',
+                })}
+              </StyledTableCell>
+              <StyledTableCell>
+                {t('core:address_book_note', {
+                  postProcess: 'capitalizeFirstChar',
+                })}
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {t('core:address_book_actions', {
+                  postProcess: 'capitalizeFirstChar',
+                })}
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedEntries.map((entry) => (
             <TableRow
               key={entry.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -193,7 +223,7 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
                 </Box>
               </StyledTableCell>
               <StyledTableCell>
-                <Tooltip title={entry.note || ''} placement="top">
+                <Tooltip title={entry.note || EMPTY_STRING} placement="top">
                   <span>{entry.note ? cropString(entry.note) : '-'}</span>
                 </Tooltip>
               </StyledTableCell>
@@ -249,6 +279,19 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
           ))}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 15]}
+        component="div"
+        count={entries.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+        labelRowsPerPage={t('core:rows_per_page', {
+          postProcess: 'capitalizeFirstChar',
+        })}
+      />
     </TableContainer>
+    </Box>
   );
 };

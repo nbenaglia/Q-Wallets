@@ -62,7 +62,7 @@ import {
   EMPTY_STRING,
   QORT_1_UNIT,
   TIME_MINUTES_1,
-  TIME_SECONDS_2,
+  
   TIME_SECONDS_3,
   TIME_SECONDS_4,
 } from '../../common/constants';
@@ -76,7 +76,6 @@ import {
 import WalletContext from '../../contexts/walletContext';
 import {
   CustomWidthTooltip,
-  DialogGeneral,
   SlideTransition,
   StyledTableCell,
   StyledTableRow,
@@ -105,11 +104,11 @@ export const getPrimaryAccountName = async (address: string) => {
       qortalRequest({ action: 'GET_PRIMARY_NAME', address })
     );
     if (primaryName) addressToPrimaryName[address] = primaryName;
-    return primaryName ?? '';
+    return primaryName ?? EMPTY_STRING;
   } catch (e) {
     console.log(e);
   }
-  return '';
+  return EMPTY_STRING;
 };
 
 export const replaceAddressesWithNames = async (
@@ -268,7 +267,7 @@ export default function QortalWallet() {
   const maxSendableQortCoin = () => {
     // manage the correct round up
     const value = (walletBalanceQort - qortTxFee).toString();
-    const [integer, decimal = ''] = value.split('.');
+    const [integer, decimal = EMPTY_STRING] = value.split('.');
     const truncated = decimal.substring(0, DECIMAL_ROUND_UP).padEnd(DECIMAL_ROUND_UP, '0');
     let truncatedMaxSendableQortCoin: number = parseFloat(`${integer}.${truncated}`);
     return truncatedMaxSendableQortCoin;
@@ -315,7 +314,7 @@ export default function QortalWallet() {
     setOpenQortAddressBook(false);
   };
 
-  const handleSelectAddress = (address: string, name: string) => {
+  const handleSelectAddress = (address: string, _name: string) => {
     setQortRecipient(address);
     setOpenQortAddressBook(false);
   };
