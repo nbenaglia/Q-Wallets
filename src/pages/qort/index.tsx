@@ -454,7 +454,6 @@ export default function QortalWallet() {
             signal: controller.signal,
           }).then(async (r) => {
             const json = await r.json();
-
             if (!json) {
               console.warn(`Invalid address format: ${qortRecipient}`);
               return { error: 'Invalid address' };

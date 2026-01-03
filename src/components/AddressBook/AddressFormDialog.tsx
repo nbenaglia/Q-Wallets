@@ -6,6 +6,8 @@ import {
   TextField,
   Button,
   Box,
+  CircularProgress,
+  InputAdornment,
 } from '@mui/material';
 import { Coin } from 'qapp-core';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +15,9 @@ import { DialogGeneral } from '../../styles/page-styles';
 import { AddressBookEntry } from '../../utils/Types';
 import { validateAddress } from '../../utils/addressValidation';
 import { ADDRESSBOOK_NAME_LENGTH, ADDRESSBOOK_NOTE_LENGTH, EMPTY_STRING } from '../../common/constants';
+
+const ADDRESS_LOOKUP_DEBOUNCE_MS = 1000;
+const ADDRESS_MIN_LENGTH = 3;
 
 interface AddressFormDialogProps {
   open: boolean;
@@ -39,6 +44,9 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
   const [addressError, setAddressError] = useState(EMPTY_STRING);
   const [noteError, setNoteError] = useState(EMPTY_STRING);
 
+  // QORT-specific state for username resolution
+  const [addressValidating, setAddressValidating] = useState(false);
+
   const isEditMode = !!entry;
 
   // Load entry data when editing
@@ -58,8 +66,50 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
       setNameError(EMPTY_STRING);
       setAddressError(EMPTY_STRING);
       setNoteError(EMPTY_STRING);
+      setAddressValidating(false);
     }
   }, [open, entry]);
+
+  // QORT username resolution - validate and auto-fill address from username
+  useEffect(() => {
+    if (coinType !== Coin.QORT || !name || name.length < ADDRESS_MIN_LENGTH) {
+      return;
+    }
+
+    setAddressValidating(true);
+    const controller = new AbortController();
+
+    const timeout = setTimeout(async () => {
+      try {
+        const nameRes = await fetch(`/names/${encodeURIComponent(name)}`, {
+          signal: controller.signal,
+        }).then(async (r) => {
+          if (!r.ok) {
+            console.warn(`No name found: ${name}`);
+            return { error: 'Name not found' };
+          }
+          return r.json();
+        });
+
+        // If name was found, update address field with the owner address
+        if (!nameRes?.error && nameRes?.owner) {
+          console.log(`QORT name resolved: ${name} -> ${nameRes.owner}`);
+          setAddress(nameRes.owner);
+          setAddressError(EMPTY_STRING);
+        }
+      } catch (err: any) {
+        if (err.name === 'AbortError') return;
+        console.error('Name lookup failed:', err.message);
+      } finally {
+        setAddressValidating(false);
+      }
+    }, ADDRESS_LOOKUP_DEBOUNCE_MS);
+
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [name, coinType, t]);
 
   const validateName = (value: string): boolean => {
     if (!value.trim()) {
@@ -157,7 +207,8 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
     address.trim() !== EMPTY_STRING &&
     !nameError &&
     !addressError &&
-    !noteError;
+    !noteError &&
+    (coinType === Coin.QORT ? !addressValidating : true);
 
   return (
     <DialogGeneral open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -183,19 +234,28 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
             onChange={handleNameChange}
             error={!!nameError}
             helperText={
-              nameError || (
-                <Box
-                  component="span"
-                  sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <span></span>
-                  <span style={{ fontSize: '0.75rem' }}>{name.length}/{ADDRESSBOOK_NAME_LENGTH}</span>
-                </Box>
-              )
+              nameError || (coinType === Coin.QORT && addressValidating
+                ? t('core:message.generic.validating')
+                : (
+                  <Box
+                    component="span"
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <span></span>
+                    <span style={{ fontSize: '0.75rem' }}>{name.length}/{ADDRESSBOOK_NAME_LENGTH}</span>
+                  </Box>
+                ))
             }
             slotProps={{
               htmlInput: {
                 maxLength: ADDRESSBOOK_NAME_LENGTH,
+              },
+              input: {
+                endAdornment: coinType === Coin.QORT && addressValidating ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} />
+                  </InputAdornment>
+                ) : undefined,
               },
             }}
           />
