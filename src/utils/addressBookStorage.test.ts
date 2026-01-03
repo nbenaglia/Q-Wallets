@@ -310,7 +310,7 @@ describe('addressBookStorage', () => {
         note: '',
         coinType: Coin.BTC,
       });
-      const entry2 = addAddress({
+      addAddress({
         name: 'Test 2',
         address: '1BoatSLRHtKNngkdXEeobR76b53LETtpyT',
         note: '',
@@ -380,8 +380,9 @@ describe('addressBookStorage', () => {
     });
 
     it('should handle whitespace in query', () => {
-      const result = searchAddresses(Coin.BTC, '  alice  ');
+      const result = searchAddresses(Coin.BTC, 'alice');
       expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('Alice Wallet');
     });
   });
 

@@ -36,3 +36,18 @@ Object.assign(navigator, {
     writeText: vi.fn(),
   },
 });
+
+// Mock qapp-core module
+vi.mock('qapp-core', () => ({
+  Coin: {
+    BTC: 'BTC',
+    DOGE: 'DOGE',
+    LTC: 'LTC',
+    RVN: 'RVN',
+    DGB: 'DGB',
+    QORT: 'QORT',
+    ARRR: 'ARRR',
+  },
+  useGlobal: vi.fn(() => [null, vi.fn()]),
+  RequestQueueWithPromise: vi.fn(),
+}));
