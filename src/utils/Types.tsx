@@ -67,7 +67,3 @@ export interface AddressBookEntry {
     createdAt: number;             // Unix timestamp
     updatedAt?: number;            // Unix timestamp (optional)
 }
-
-export interface AddressBookStorage {
-    [coinType: string]: AddressBookEntry[];
-}

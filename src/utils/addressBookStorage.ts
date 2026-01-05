@@ -45,12 +45,12 @@ export const addAddress = (
   try {
     // Validate name length
     if (entry.name.length > ADDRESSBOOK_NAME_LENGTH) {
-      throw new Error('Name must be 50 characters or less');
+      throw new Error(`Name must be ${ADDRESSBOOK_NAME_LENGTH} characters or less`);
     }
 
     // Validate note length
     if (entry.note.length > ADDRESSBOOK_NOTE_LENGTH) {
-      throw new Error('Note must be 200 characters or less');
+      throw new Error(`Note must be ${ADDRESSBOOK_NOTE_LENGTH} characters or less`);
     }
 
     // Create new entry with ID and timestamp
@@ -91,12 +91,12 @@ export const updateAddress = (
   try {
     // Validate name length if provided
     if (updates.name && updates.name.length > ADDRESSBOOK_NAME_LENGTH) {
-      throw new Error('Name must be 50 characters or less');
+      throw new Error(`Name must be ${ADDRESSBOOK_NAME_LENGTH} characters or less`);
     }
 
     // Validate note length if provided
     if (updates.note && updates.note.length > ADDRESSBOOK_NOTE_LENGTH) {
-      throw new Error('Note must be 200 characters or less');
+      throw new Error(`Note must be ${ADDRESSBOOK_NOTE_LENGTH} characters or less`);
     }
 
     // Get existing addresses

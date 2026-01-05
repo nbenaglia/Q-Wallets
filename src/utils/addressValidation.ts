@@ -1,4 +1,5 @@
 import { Coin } from 'qapp-core';
+import { EMPTY_STRING } from '../common/constants';
 
 /**
  * Validate Bitcoin (BTC) address format
@@ -75,7 +76,7 @@ export const validateQortAddress = (address: string): boolean => {
  * Factory function that routes to the appropriate validator
  */
 export const validateAddress = (coinType: Coin, address: string): boolean => {
-  if (!address || address.trim() === '') {
+  if (!address || address.trim() === EMPTY_STRING) {
     return false;
   }
 

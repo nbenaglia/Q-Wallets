@@ -143,7 +143,7 @@ describe('addressBookStorage', () => {
       expect(result.createdAt).toBeLessThanOrEqual(after);
     });
 
-    it('should throw error for name exceeding 50 characters', () => {
+    it(`should throw error for name exceeding ${ADDRESSBOOK_NAME_LENGTH} characters`, () => {
       const longName = 'a'.repeat(ADDRESSBOOK_NAME_LENGTH + 1);
       expect(() =>
         addAddress({
@@ -152,10 +152,10 @@ describe('addressBookStorage', () => {
           note: '',
           coinType: Coin.BTC,
         })
-      ).toThrow('Name must be 50 characters or less');
+      ).toThrow(`Name must be ${ADDRESSBOOK_NAME_LENGTH} characters or less`);
     });
 
-    it('should throw error for note exceeding 200 characters', () => {
+    it(`should throw error for note exceeding ${ADDRESSBOOK_NOTE_LENGTH} characters`, () => {
       const longNote = 'a'.repeat(ADDRESSBOOK_NOTE_LENGTH + 1);
       expect(() =>
         addAddress({
@@ -164,7 +164,7 @@ describe('addressBookStorage', () => {
           note: longNote,
           coinType: Coin.BTC,
         })
-      ).toThrow('Note must be 200 characters or less');
+      ).toThrow(`Note must be ${ADDRESSBOOK_NOTE_LENGTH} characters or less`);
     });
 
     it('should console log the operation', () => {
@@ -227,7 +227,7 @@ describe('addressBookStorage', () => {
       expect(result).toBeNull();
     });
 
-    it('should throw error for name exceeding 50 characters', () => {
+    it(`should throw error for name exceeding ${ADDRESSBOOK_NAME_LENGTH} characters`, () => {
       const original = addAddress({
         name: 'Test',
         address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
@@ -238,10 +238,10 @@ describe('addressBookStorage', () => {
       const longName = 'a'.repeat(ADDRESSBOOK_NAME_LENGTH + 1);
       expect(() =>
         updateAddress(original.id, Coin.BTC, { name: longName })
-      ).toThrow('Name must be 50 characters or less');
+      ).toThrow(`Name must be ${ADDRESSBOOK_NAME_LENGTH} characters or less`);
     });
 
-    it('should throw error for note exceeding 200 characters', () => {
+    it(`should throw error for note exceeding ${ADDRESSBOOK_NOTE_LENGTH} characters`, () => {
       const original = addAddress({
         name: 'Test',
         address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
@@ -252,7 +252,7 @@ describe('addressBookStorage', () => {
       const longNote = 'a'.repeat(ADDRESSBOOK_NOTE_LENGTH + 1);
       expect(() =>
         updateAddress(original.id, Coin.BTC, { note: longNote })
-      ).toThrow('Note must be 200 characters or less');
+      ).toThrow(`Note must be ${ADDRESSBOOK_NOTE_LENGTH} characters or less`);
     });
 
     it('should console log the operation', () => {

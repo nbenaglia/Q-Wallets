@@ -1,4 +1,4 @@
-import { EMPTY_STRING } from './constants';
+import { EMPTY_STRING, ONE_SPACE } from './constants';
 
 let timeSegments = [
   3.154e10,
@@ -86,7 +86,7 @@ export function humanFileSize(
     u < units.length - 1
   );
 
-  return bytes.toFixed(dp) + ' ' + units[u];
+  return bytes.toFixed(dp) + ONE_SPACE + units[u];
 }
 
 export async function copyToClipboard(text: string): Promise<void> {
