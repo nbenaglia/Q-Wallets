@@ -148,7 +148,9 @@ export const replaceAddressesWithNames = async (
     return {
       ...d,
       creatorAddress,
+      creatorAddressOriginal: d.creatorAddress,
       recipient,
+      recipientOriginal: d.recipient,
     } as SearchTransactionsResponse;
   });
 };
@@ -857,7 +859,7 @@ export default function QortalWallet() {
                       postProcess: 'capitalizeFirstChar',
                     })}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="left">
                     {t('core:type', {
                       postProcess: 'capitalizeFirstChar',
                     })}
@@ -903,8 +905,10 @@ export default function QortalWallet() {
                       approvalStatus: string;
                       blockHeight: number;
                       creatorAddress: string;
+                      creatorAddressOriginal?: string;
                       fee: number;
                       recipient: string;
+                      recipientOriginal?: string;
                       reference: string;
                       senderPublicKey: string;
                       signature: string;
@@ -966,7 +970,12 @@ export default function QortalWallet() {
                       <StyledTableCell style={{ width: 'auto' }} align="left">
                         {row?.type}
                       </StyledTableCell>
-                      <StyledTableCell style={{ width: 'auto' }} align="left">
+                      <StyledTableCell
+                        style={{ width: 'auto', cursor: 'pointer' }}
+                        align="left"
+                        title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                        onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                      >
                         {row?.creatorAddress === address ||
                         row?.creatorAddress === userName ? (
                           <Box style={{ color: theme.palette.info.main }}>
@@ -976,7 +985,12 @@ export default function QortalWallet() {
                           row?.creatorAddress
                         )}
                       </StyledTableCell>
-                      <StyledTableCell style={{ width: 'auto' }} align="left">
+                      <StyledTableCell
+                        style={{ width: 'auto', cursor: 'pointer' }}
+                        align="left"
+                        title={t('core:action.double_click_copy_address', { address: row?.recipientOriginal || row?.recipient })}
+                        onDoubleClick={() => copyToClipboard(row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
+                      >
                         {row?.recipient === address ||
                         row?.recipient === userName ? (
                           <Box style={{ color: theme.palette.info.main }}>
@@ -1112,6 +1126,7 @@ export default function QortalWallet() {
                     blockHeight: number;
                     type: string;
                     creatorAddress: string;
+                    creatorAddressOriginal?: string;
                     identifier: string;
                     size: number;
                     fee: number;
@@ -1169,7 +1184,12 @@ export default function QortalWallet() {
                     <StyledTableCell style={{ width: 'auto' }} align="left">
                       {row?.type}
                     </StyledTableCell>
-                    <StyledTableCell style={{ width: 'auto' }} align="left">
+                    <StyledTableCell
+                      style={{ width: 'auto', cursor: 'pointer' }}
+                      align="left"
+                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                    >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
                         <Box style={{ color: theme.palette.info.main }}>
@@ -1308,7 +1328,9 @@ export default function QortalWallet() {
                     blockHeight: number;
                     type: string;
                     creatorAddress: string;
+                    creatorAddressOriginal?: string;
                     recipient: string;
+                    recipientOriginal?: string;
                     description: string | '';
                     amount: number;
                     fee: number;
@@ -1366,7 +1388,12 @@ export default function QortalWallet() {
                     <StyledTableCell style={{ width: 'auto' }} align="left">
                       {row?.type}
                     </StyledTableCell>
-                    <StyledTableCell style={{ width: 'auto' }} align="left">
+                    <StyledTableCell
+                      style={{ width: 'auto', cursor: 'pointer' }}
+                      align="left"
+                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                    >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
                         <Box style={{ color: theme.palette.info.main }}>
@@ -1376,7 +1403,12 @@ export default function QortalWallet() {
                         row?.creatorAddress
                       )}
                     </StyledTableCell>
-                    <StyledTableCell style={{ width: 'auto' }} align="left">
+                    <StyledTableCell
+                      style={{ width: 'auto', cursor: row?.recipientOriginal || row?.recipient ? 'pointer' : 'default' }}
+                      align="left"
+                      title={(row?.recipientOriginal || row?.recipient) ? t('core:action.double_click_copy_address', { address: row?.recipientOriginal || row?.recipient }) : undefined}
+                      onDoubleClick={() => (row?.recipientOriginal || row?.recipient) && copyToClipboard(row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
+                    >
                       {(() => {
                         if (row?.recipient) {
                           if (
@@ -1526,6 +1558,7 @@ export default function QortalWallet() {
                     admin: string;
                     blockHeight: number;
                     creatorAddress: string;
+                    creatorAddressOriginal?: string;
                     fee: number;
                     groupId: number;
                     groupName: string;
@@ -1589,7 +1622,12 @@ export default function QortalWallet() {
                     <StyledTableCell style={{ width: 'auto' }} align="left">
                       {row?.type}
                     </StyledTableCell>
-                    <StyledTableCell style={{ width: 'auto' }} align="left">
+                    <StyledTableCell
+                      style={{ width: 'auto', cursor: 'pointer' }}
+                      align="left"
+                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                    >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
                         <Box style={{ color: theme.palette.info.main }}>

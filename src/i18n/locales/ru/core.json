@@ -8,6 +8,7 @@
     "close": "закрыть",
     "copy_address": "скопировать адрес",
     "copy_hash": "скопировать хеш: {{ hash }}",
+    "double_click_copy_address": "дважды щёлкните, чтобы скопировать\n{{ address }}",
     "force_sync": "принудительная синхронизация",
     "refresh": "обновить",
     "remove": "удалить",

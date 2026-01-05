@@ -53,8 +53,10 @@ export interface SearchTransactionsResponse {
     blockHeight: number;
     approvalStatus: string;
     creatorAddress: string;
+    creatorAddressOriginal?: string;
     senderPublicKey: string;
     recipient: string;
+    recipientOriginal?: string;
     amount: string;
 }
 

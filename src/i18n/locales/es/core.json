@@ -8,6 +8,7 @@
     "close": "Cerrar",
     "copy_address": "Copiar dirección",
     "copy_hash": "Copiar hash: {{ hash }}",
+    "double_click_copy_address": "doble clic para copiar\n{{ address }}",
     "force_sync": "Forzar sincronización",
     "refresh": "Actualizar",
     "remove": "Eliminar",
