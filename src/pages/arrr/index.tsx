@@ -86,6 +86,7 @@ import {
   WalletCard,
 } from '../../styles/page-styles';
 import { Coin } from 'qapp-core';
+import { validateArrrAddress } from '../../utils/addressValidation';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -247,9 +248,9 @@ export default function PirateWallet() {
 
   const handleRecipientChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    const pattern = /^(zs1[a-zA-Z0-9]{75})$/;
     setArrrRecipient(value);
-    if (pattern.test(value) || value === EMPTY_STRING) {
+    
+    if (validateArrrAddress(value) || value === EMPTY_STRING) {
       setAddressFormatError(false);
     } else {
       setAddressFormatError(true);

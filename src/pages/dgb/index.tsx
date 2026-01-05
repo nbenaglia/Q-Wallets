@@ -72,6 +72,7 @@ import {
   WalletCard,
 } from '../../styles/page-styles';
 import { Coin } from 'qapp-core';
+import { validateDgbAddress } from '../../utils/addressValidation';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -240,13 +241,10 @@ export default function DigibyteWallet() {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value.trim();
-    const pattern =
-      /^(D[1-9A-HJ-NP-Za-km-z]{33}|S[1-9A-HJ-NP-Za-km-z]{33}|dgb1[2-9A-HJ-NP-Za-z]{39})$/;
-
     setDgbRecipient(value);
-
-    if (pattern.test(value) || value === EMPTY_STRING) {
-      setAddressFormatError(false);
+    
+    if (validateDgbAddress(value) || value === EMPTY_STRING) {
+      setAddressFormatError(false);      
     } else {
       setAddressFormatError(true);
     }

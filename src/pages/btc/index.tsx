@@ -72,6 +72,7 @@ import {
   WalletCard,
 } from '../../styles/page-styles';
 import { Coin } from 'qapp-core';
+import { validateBtcAddress } from '../../utils/addressValidation';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -223,12 +224,9 @@ export default function BitcoinWallet() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value.trim();
-    const pattern =
-      /^(1[1-9A-HJ-NP-Za-km-z]{33}|3[1-9A-HJ-NP-Za-km-z]{33}|bc1[02-9A-HJ-NP-Za-z]{39})$/;
-
     setBtcRecipient(value);
 
-    if (pattern.test(value) || value === EMPTY_STRING) {
+    if (validateBtcAddress(value) || value === EMPTY_STRING) {
       setAddressFormatError(false);
     } else {
       setAddressFormatError(true);

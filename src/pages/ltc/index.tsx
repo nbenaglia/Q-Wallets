@@ -72,6 +72,7 @@ import {
 } from '../../styles/page-styles';
 import { FeeManager } from '../../components/FeeManager';
 import { Coin } from 'qapp-core';
+import { validateLtcAddress } from '../../utils/addressValidation';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -226,12 +227,9 @@ export default function LitecoinWallet() {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value: string = e.target.value.trim();
-    const pattern =
-      /^(L[1-9A-HJ-NP-Za-km-z]{33}|M[1-9A-HJ-NP-Za-km-z]{33}|ltc1[2-9A-HJ-NP-Za-z]{39})$/;
-
     setLtcRecipient(value);
 
-    if (pattern.test(value) || value === EMPTY_STRING) {
+    if (validateLtcAddress(value) || value === EMPTY_STRING) {
       setAddressFormatError(false);
     } else {
       setAddressFormatError(true);

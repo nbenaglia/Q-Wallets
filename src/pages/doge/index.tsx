@@ -72,6 +72,7 @@ import {
 } from '../../styles/page-styles';
 import { FeeManager } from '../../components/FeeManager';
 import { Coin } from 'qapp-core';
+import { validateDogeAddress } from '../../utils/addressValidation';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -223,11 +224,9 @@ export default function DogecoinWallet() {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = e.target.value.trim();
-    const pattern = /^(D[1-9A-HJ-NP-Za-km-z]{33})$/;
-
     setDogeRecipient(value);
 
-    if (pattern.test(value) || value === EMPTY_STRING) {
+    if (validateDogeAddress(value) || value === EMPTY_STRING) {
       setAddressFormatError(false);
     } else {
       setAddressFormatError(true);
