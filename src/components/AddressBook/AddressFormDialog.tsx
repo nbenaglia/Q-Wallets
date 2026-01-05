@@ -25,6 +25,8 @@ interface AddressFormDialogProps {
   coinType: Coin;
   entry?: AddressBookEntry;
   onSave: (entry: Omit<AddressBookEntry, 'id' | 'createdAt'>) => void;
+  prefillName?: string;
+  prefillAddress?: string;
 }
 
 export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
@@ -33,6 +35,8 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
   coinType,
   entry,
   onSave,
+  prefillName,
+  prefillAddress,
 }) => {
   const { t } = useTranslation(['core']);
 
@@ -57,9 +61,9 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
         setAddress(entry.address);
         setNote(entry.note);
       } else {
-        // Reset form for new entry
-        setName(EMPTY_STRING);
-        setAddress(EMPTY_STRING);
+        // Reset form for new entry or use prefill data
+        setName(prefillName || EMPTY_STRING);
+        setAddress(prefillAddress || EMPTY_STRING);
         setNote(EMPTY_STRING);
       }
       // Clear errors when dialog opens
@@ -68,7 +72,7 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
       setNoteError(EMPTY_STRING);
       setAddressValidating(false);
     }
-  }, [open, entry]);
+  }, [open, entry, prefillName, prefillAddress]);
 
   // QORT username resolution - validate and auto-fill address from username
   useEffect(() => {

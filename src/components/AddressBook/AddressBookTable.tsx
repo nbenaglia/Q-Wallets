@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { StyledTableCell } from '../../styles/page-styles';
 import { AddressBookEntry } from '../../utils/Types';
 import { copyToClipboard, cropString } from '../../common/functions';
-import { EMPTY_STRING } from '../../common/constants';
+import { EMPTY_STRING, TIME_SECONDS_2 } from '../../common/constants';
 
 interface AddressBookTableProps {
   entries: AddressBookEntry[];
@@ -56,7 +56,7 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
     try {
       await copyToClipboard(address);
       setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
+      setTimeout(() => setCopiedId(null), TIME_SECONDS_2);
     } catch (error) {
       console.error('Failed to copy address:', error);
     }
@@ -191,7 +191,9 @@ export const AddressBookTable: React.FC<AddressBookTableProps> = ({
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <StyledTableCell component="th" scope="row">
-                {entry.name}
+                 <Tooltip title={entry.name || EMPTY_STRING} placement="top">
+                  <span>{entry.name ? cropString(entry.name, 20) : '-'}</span>
+                </Tooltip>
               </StyledTableCell>
               <StyledTableCell>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

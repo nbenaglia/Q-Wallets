@@ -251,6 +251,7 @@ export default function QortalWallet() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [openQortAddressBook, setOpenQortAddressBook] = useState(false);
+  const [addressBookPrefill, setAddressBookPrefill] = useState<{name: string, address: string} | null>(null);
   const [loadingRefreshQort, setLoadingRefreshQort] = useState(false);
   const [openQortSend, setOpenQortSend] = useState(false);
   const [openTxQortSubmit, setOpenTxQortSubmit] = useState(false);
@@ -312,8 +313,14 @@ export default function QortalWallet() {
     setOpenQortAddressBook(true);
   };
 
+  const handleOpenAddressBookWithData = (name: string, addressValue: string) => {
+    setAddressBookPrefill({ name, address: addressValue });
+    setOpenQortAddressBook(true);
+  };
+
   const handleCloseAddressBook = () => {
     setOpenQortAddressBook(false);
+    setAddressBookPrefill(null);
   };
 
   const handleSelectAddress = (address: string, _name: string) => {
@@ -973,8 +980,8 @@ export default function QortalWallet() {
                       <StyledTableCell
                         style={{ width: 'auto', cursor: 'pointer' }}
                         align="left"
-                        title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
-                        onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                        title={t('core:action.double_click_addressbook', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                        onDoubleClick={() => handleOpenAddressBookWithData(row?.creatorAddress || EMPTY_STRING, row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
                       >
                         {row?.creatorAddress === address ||
                         row?.creatorAddress === userName ? (
@@ -988,8 +995,8 @@ export default function QortalWallet() {
                       <StyledTableCell
                         style={{ width: 'auto', cursor: 'pointer' }}
                         align="left"
-                        title={t('core:action.double_click_copy_address', { address: row?.recipientOriginal || row?.recipient })}
-                        onDoubleClick={() => copyToClipboard(row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
+                        title={t('core:action.double_click_addressbook', { address: row?.recipientOriginal || row?.recipient })}
+                        onDoubleClick={() => handleOpenAddressBookWithData(row?.recipient || EMPTY_STRING, row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
                       >
                         {row?.recipient === address ||
                         row?.recipient === userName ? (
@@ -1187,8 +1194,8 @@ export default function QortalWallet() {
                     <StyledTableCell
                       style={{ width: 'auto', cursor: 'pointer' }}
                       align="left"
-                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
-                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                      title={t('core:action.double_click_addressbook', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => handleOpenAddressBookWithData(row?.creatorAddress || EMPTY_STRING, row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
                     >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
@@ -1391,8 +1398,8 @@ export default function QortalWallet() {
                     <StyledTableCell
                       style={{ width: 'auto', cursor: 'pointer' }}
                       align="left"
-                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
-                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                      title={t('core:action.double_click_addressbook', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => handleOpenAddressBookWithData(row?.creatorAddress || EMPTY_STRING, row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
                     >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
@@ -1406,8 +1413,8 @@ export default function QortalWallet() {
                     <StyledTableCell
                       style={{ width: 'auto', cursor: row?.recipientOriginal || row?.recipient ? 'pointer' : 'default' }}
                       align="left"
-                      title={(row?.recipientOriginal || row?.recipient) ? t('core:action.double_click_copy_address', { address: row?.recipientOriginal || row?.recipient }) : undefined}
-                      onDoubleClick={() => (row?.recipientOriginal || row?.recipient) && copyToClipboard(row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
+                      title={(row?.recipientOriginal || row?.recipient) ? t('core:action.double_click_addressbook', { address: row?.recipientOriginal || row?.recipient }) : undefined}
+                      onDoubleClick={() => (row?.recipientOriginal || row?.recipient) && handleOpenAddressBookWithData(row?.recipient || EMPTY_STRING, row?.recipientOriginal || row?.recipient || EMPTY_STRING)}
                     >
                       {(() => {
                         if (row?.recipient) {
@@ -1625,8 +1632,8 @@ export default function QortalWallet() {
                     <StyledTableCell
                       style={{ width: 'auto', cursor: 'pointer' }}
                       align="left"
-                      title={t('core:action.double_click_copy_address', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
-                      onDoubleClick={() => copyToClipboard(row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
+                      title={t('core:action.double_click_addressbook', { address: row?.creatorAddressOriginal || row?.creatorAddress })}
+                      onDoubleClick={() => handleOpenAddressBookWithData(row?.creatorAddress || EMPTY_STRING, row?.creatorAddressOriginal || row?.creatorAddress || EMPTY_STRING)}
                     >
                       {row?.creatorAddress === address ||
                       row?.creatorAddress === userName ? (
@@ -3451,6 +3458,7 @@ export default function QortalWallet() {
         onClose={handleCloseAddressBook}
         coinType={Coin.QORT}
         onSelectAddress={handleSelectAddress}
+        prefillData={addressBookPrefill}
       />
 
       <WalletCard sx={{ p: { xs: 2, md: 3 }, width: '100%' }}>

@@ -34,6 +34,7 @@ interface AddressBookDialogProps {
   onClose: () => void;
   coinType: Coin;
   onSelectAddress?: (address: string, name: string) => void;
+  prefillData?: { name: string; address: string } | null;
 }
 
 export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
@@ -41,6 +42,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   onClose,
   coinType,
   onSelectAddress,
+  prefillData,
 }) => {
   const { t } = useTranslation(['core']);
   const theme = useTheme();
@@ -61,6 +63,16 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       loadEntries();
     }
   }, [open, coinType]);
+
+  // Open form with prefilled data when prefillData is provided
+  useEffect(() => {
+    if (open && prefillData) {
+      // Don't set editingEntry, just open the form
+      // The prefill data will be passed as props to AddressFormDialog
+      setEditingEntry(undefined);
+      setOpenForm(true);
+    }
+  }, [open, prefillData]);
 
   // Filter entries when search query changes
   useEffect(() => {
@@ -262,6 +274,8 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
         coinType={coinType}
         entry={editingEntry}
         onSave={handleSave}
+        prefillName={prefillData?.name}
+        prefillAddress={prefillData?.address}
       />
 
       {/* Delete Confirmation Dialog */}
