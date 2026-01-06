@@ -121,6 +121,7 @@
       "update_group": "الوصف الجديد: {{ newDescription }} المعرف: {{ id }}"
     },
     "error": {
+      "address_already_exists": "العنوان موجود بالفعل في دفتر العناوين",
       "amount_exceeds_balance": "الحد الأقصى المسموح: {{ maxAmount }}",
       "amount_positive": "يجب أن يكون المبلغ أكبر من 0",
       "bitcoin_address_invalid": "عنوان BTC غير صالح",

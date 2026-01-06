@@ -121,6 +121,7 @@
       "update_group": "nueva descripción: {{ newDescription }} ID: {{ id }}"
     },
     "error": {
+      "address_already_exists": "La dirección ya existe en la libreta de direcciones",
       "amount_exceeds_balance": "Máximo permitido: {{ maxAmount }}",
       "amount_positive": "El monto debe ser mayor que 0",
       "bitcoin_address_invalid": "Dirección BTC no válida",

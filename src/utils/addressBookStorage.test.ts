@@ -180,6 +180,30 @@ describe('addressBookStorage', () => {
         expect.stringContaining('Address Book: Added Test for BTC')
       );
     });
+
+    it('should not allow duplicate QORT addresses', () => {
+      const qortAddress = 'QixPbJUwsaHsVEofJdozU9zgVqkK6aYhrK';
+
+      addAddress({
+        name: 'Alice',
+        address: qortAddress,
+        note: 'First entry',
+        coinType: Coin.QORT,
+      });
+
+      expect(() =>
+        addAddress({
+          name: 'Bob',
+          address: qortAddress,
+          note: 'Duplicate address',
+          coinType: Coin.QORT,
+        })
+      ).toThrow('Address already exists in the address book');
+
+      const addresses = getAddressBook(Coin.QORT);
+      expect(addresses).toHaveLength(1);
+      expect(addresses[0].name).toBe('Alice');
+    });
   });
 
   describe('updateAddress', () => {

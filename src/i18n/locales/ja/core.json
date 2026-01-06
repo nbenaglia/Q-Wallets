@@ -122,6 +122,7 @@
       "update_group": "新しい説明: {{ newDescription }} ID: {{ id }}"
     },
     "error": {
+      "address_already_exists": "アドレスは既にアドレス帳に存在します",
       "amount_exceeds_balance": "最大許可額: {{ maxAmount }}",
       "amount_positive": "金額は0より大きくなければなりません",
       "bitcoin_address_invalid": "無効な BTC アドレス",

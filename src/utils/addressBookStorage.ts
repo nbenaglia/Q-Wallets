@@ -53,15 +53,24 @@ export const addAddress = (
       throw new Error(`Note must be ${ADDRESSBOOK_NOTE_LENGTH} characters or less`);
     }
 
+    // Get existing addresses
+    const existingAddresses = getAddressBook(entry.coinType);
+
+    // Check for duplicate address
+    const duplicateAddress = existingAddresses.find(
+      existing => existing.address === entry.address
+    );
+
+    if (duplicateAddress) {
+      throw new Error('Address already exists in the address book');
+    }
+
     // Create new entry with ID and timestamp
     const newEntry: AddressBookEntry = {
       ...entry,
       id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       createdAt: Date.now(),
     };
-
-    // Get existing addresses
-    const existingAddresses = getAddressBook(entry.coinType);
 
     // Add new entry
     const updatedAddresses = [...existingAddresses, newEntry];

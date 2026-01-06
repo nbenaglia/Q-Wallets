@@ -121,6 +121,7 @@
       "update_group": "new description: {{ newDescription }} ID: {{ id }}"
     },
     "error": {
+      "address_already_exists": "Address already exists in the address book",
       "amount_positive": "Amount must be > 0",
       "amount_exceeds_balance": "`Max allowed: {{ maxAmount }}",
       "bitcoin_address_invalid": "Invalid BTC address",

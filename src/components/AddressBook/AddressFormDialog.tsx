@@ -27,6 +27,7 @@ interface AddressFormDialogProps {
   onSave: (entry: Omit<AddressBookEntry, 'id' | 'createdAt'>) => void;
   prefillName?: string;
   prefillAddress?: string;
+  saveError?: string;
 }
 
 export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
@@ -37,6 +38,7 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
   onSave,
   prefillName,
   prefillAddress,
+  saveError,
 }) => {
   const { t } = useTranslation(['core']);
 
@@ -307,30 +309,35 @@ export const AddressFormDialog: React.FC<AddressFormDialogProps> = ({
           />
         </Box>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onClose}>
-          {t('core:address_book_cancel', {
-            postProcess: 'capitalizeFirstChar',
-          })}
-        </Button>
-        <Button
-          onClick={handleSave}
-          variant="contained"
-          disabled={!isFormValid}
-          sx={{
-            backgroundColor: '#05a2e4',
-            '&:hover': {
-              backgroundColor: '#02648d',
-            },
-            '&:disabled': {
-              backgroundColor: 'rgba(0, 0, 0, 0.12)',
-            },
-          }}
-        >
-          {t('core:address_book_save', {
-            postProcess: 'capitalizeFirstChar',
-          })}
-        </Button>
+      <DialogActions sx={{ ml: 1, px: 3, pb: 2, justifyContent: 'space-between' }}>
+        <Box sx={{ color: 'error.main', fontSize: '1rem', maxWidth: '60%' }}>
+          {saveError}
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button onClick={onClose}>
+            {t('core:address_book_cancel', {
+              postProcess: 'capitalizeFirstChar',
+            })}
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            disabled={!isFormValid}
+            sx={{
+              backgroundColor: '#05a2e4',
+              '&:hover': {
+                backgroundColor: '#02648d',
+              },
+              '&:disabled': {
+                backgroundColor: 'rgba(0, 0, 0, 0.12)',
+              },
+            }}
+          >
+            {t('core:address_book_save', {
+              postProcess: 'capitalizeFirstChar',
+            })}
+          </Button>
+        </Box>
       </DialogActions>
     </DialogGeneral>
   );

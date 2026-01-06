@@ -122,6 +122,7 @@
       "update_group": "新描述：{{ newDescription }} ID：{{ id }}"
     },
     "error": {
+      "address_already_exists": "地址簿中已存在该地址",
       "amount_exceeds_balance": "允许的最大金额: {{ maxAmount }}",
       "amount_positive": "金额必须大于 0",
       "bitcoin_address_invalid": "无效的 BTC 地址",

@@ -121,6 +121,7 @@
       "update_group": "uus kirjeldus: {{ newDescription }} ID: {{ id }}"
     },
     "error": {
+      "address_already_exists": "Aadress on aadressiraamatus juba olemas",
       "amount_exceeds_balance": "Maksimaalne lubatud: {{ maxAmount }}",
       "amount_positive": "Summa peab olema suurem kui 0",
       "bitcoin_address_invalid": "Kehtetu BTC-aadress",

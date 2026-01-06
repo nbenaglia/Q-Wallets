@@ -56,10 +56,12 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   const [deletingEntry, setDeletingEntry] = useState<AddressBookEntry | undefined>(undefined);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(ADDRESS_BOOK_ROWS_PER_PAGE);
+  const [saveError, setSaveError] = useState<string>(EMPTY_STRING);
 
   // Load entries when dialog opens or coinType changes
   useEffect(() => {
     if (open) {
+      setPage(0);
       loadEntries();
     }
   }, [open, coinType]);
@@ -93,11 +95,13 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
 
   const handleAddNew = () => {
     setEditingEntry(undefined);
+    setSaveError(EMPTY_STRING);
     setOpenForm(true);
   };
 
   const handleEdit = (entry: AddressBookEntry) => {
     setEditingEntry(entry);
+    setSaveError(EMPTY_STRING);
     setOpenForm(true);
   };
 
@@ -143,14 +147,23 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       loadEntries();
       setOpenForm(false);
       setEditingEntry(undefined);
-    } catch (error) {
+      setSaveError(EMPTY_STRING);
+    } catch (error: any) {
       console.error('Error saving address:', error);
+      // Set the error message to display in the form
+      const errorMessage = error?.message || t('core:message.error.something_went_wrong');
+      setSaveError(
+        errorMessage === 'Address already exists in the address book'
+          ? t('core:message.error.address_already_exists')
+          : errorMessage
+      );
     }
   };
 
   const handleFormClose = () => {
     setOpenForm(false);
     setEditingEntry(undefined);
+    setSaveError(EMPTY_STRING);
   };
 
   const handleUse = (entry: AddressBookEntry) => {
@@ -276,6 +289,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
         onSave={handleSave}
         prefillName={prefillData?.name}
         prefillAddress={prefillData?.address}
+        saveError={saveError}
       />
 
       {/* Delete Confirmation Dialog */}
