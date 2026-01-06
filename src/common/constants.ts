@@ -3,10 +3,10 @@ export const EMPTY_STRING: string = '';
 export const ONE_SPACE: string = ' ';
 
 // Number
-export const DECIMAL_ROUND_UP: number = 8;
 export const ADDRESSBOOK_NAME_LENGTH: number = 50;
 export const ADDRESSBOOK_NOTE_LENGTH: number = 200;
-export const ADDRESS_BOOK_ROWS_PER_PAGE: number = 5;
+export const ADDRESSBOOK_ROWS_PER_PAGE: number = 5;
+export const DECIMAL_ROUND_UP: number = 8;
 
 // QORT section
 export const QORT_1_UNIT: number = 100000000;

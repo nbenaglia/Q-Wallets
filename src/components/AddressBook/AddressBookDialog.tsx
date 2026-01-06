@@ -27,7 +27,7 @@ import {
 import { AddressBookTable } from './AddressBookTable';
 import { AddressFormDialog } from './AddressFormDialog';
 import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
-import { EMPTY_STRING, ADDRESS_BOOK_ROWS_PER_PAGE } from '../../common/constants';
+import { EMPTY_STRING, ADDRESSBOOK_ROWS_PER_PAGE } from '../../common/constants';
 
 interface AddressBookDialogProps {
   open: boolean;
@@ -55,7 +55,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   const [editingEntry, setEditingEntry] = useState<AddressBookEntry | undefined>(undefined);
   const [deletingEntry, setDeletingEntry] = useState<AddressBookEntry | undefined>(undefined);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(ADDRESS_BOOK_ROWS_PER_PAGE);
+  const [rowsPerPage, setRowsPerPage] = useState(ADDRESSBOOK_ROWS_PER_PAGE);
   const [saveError, setSaveError] = useState<string>(EMPTY_STRING);
 
   // Load entries when dialog opens or coinType changes
