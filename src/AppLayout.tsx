@@ -30,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import packageJson from '../package.json';
 import { EMPTY_STRING, TIME_MINUTES_1 } from './common/constants';
 import MenuIcon from '@mui/icons-material/Menu';
+import { syncAllAddressBooksOnStartup } from './utils/addressBookQDN';
 
 export default function AppLayout() {
   useIframe();
@@ -119,6 +120,17 @@ export default function AppLayout() {
       console.error('setWalletState is not available in wallet context');
     }
   }, [address, avatarUrl, isUsingGateway, name, nodeInfo, setWalletState]);
+
+  // Sync address books from QDN on app startup
+  useEffect(() => {
+    // Only sync if user is authenticated
+    if (address) {
+      syncAllAddressBooksOnStartup().catch((err) => {
+        console.error('Failed to sync address books on startup:', err);
+        // App continues to work with localStorage only
+      });
+    }
+  }, [address]);
 
   type NavHeader = { kind: 'header'; title: string };
   type NavSegment = { segment: string; title: string; icon: React.ReactNode };

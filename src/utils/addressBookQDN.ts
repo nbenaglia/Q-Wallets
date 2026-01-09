@@ -3,6 +3,13 @@ import { AddressBookEntry } from './Types';
 import { getAddressBook } from './addressBookStorage';
 
 /**
+ * Get all available coin types from the Coin enum
+ */
+function getAvailableCoins(): Coin[] {
+  return Object.values(Coin);
+}
+
+/**
  * Data structure for QDN storage
  * Includes entries, timestamp, and optional hash for conflict detection
  */
@@ -214,15 +221,7 @@ async function syncAddressBookOnStartup(coinType: string): Promise<void> {
  */
 export async function syncAllAddressBooksOnStartup(): Promise<void> {
   // Get all supported coin types from the Coin enum
-  const coinTypes = [
-    Coin.BTC,
-    Coin.DOGE,
-    Coin.LTC,
-    Coin.RVN,
-    Coin.DGB,
-    Coin.QORT,
-    Coin.ARRR
-  ];
+  const coinTypes = getAvailableCoins();
 
   console.log('QDN Sync: Starting sync for all address books...');
 

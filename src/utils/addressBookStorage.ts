@@ -1,8 +1,17 @@
 import { Coin } from 'qapp-core';
 import { AddressBookEntry } from './Types';
 import { ADDRESSBOOK_NAME_LENGTH, ADDRESSBOOK_NOTE_LENGTH } from '../common/constants';
+import { debouncedPublishToQDN } from './addressBookQDN';
 
 const STORAGE_KEY_PREFIX = 'q-wallets-addressbook';
+
+/**
+ * Interface for localStorage structure with metadata
+ */
+interface AddressBookLocalStorage {
+  entries: AddressBookEntry[];
+  lastUpdated: number;
+}
 
 /**
  * Get the localStorage key for a specific coin type
@@ -14,6 +23,7 @@ const getStorageKey = (coinType: Coin): string => {
 /**
  * Retrieve all addresses for a specific coin type
  * Returns addresses sorted alphabetically by name
+ * Handles both old format (array) and new format (object with metadata)
  */
 export const getAddressBook = (coinType: Coin): AddressBookEntry[] => {
   try {
@@ -24,7 +34,22 @@ export const getAddressBook = (coinType: Coin): AddressBookEntry[] => {
       return [];
     }
 
-    const entries: AddressBookEntry[] = JSON.parse(data);
+    const parsed = JSON.parse(data);
+    let entries: AddressBookEntry[];
+
+    // Handle both old format (array) and new format (object with metadata)
+    if (Array.isArray(parsed)) {
+      // Old format - migrate to new format
+      entries = parsed;
+      const storageData: AddressBookLocalStorage = {
+        entries,
+        lastUpdated: Date.now(),
+      };
+      localStorage.setItem(key, JSON.stringify(storageData));
+    } else {
+      // New format with metadata
+      entries = parsed.entries || [];
+    }
 
     // Sort by name alphabetically (case-insensitive)
     return entries.sort((a, b) =>
@@ -38,6 +63,7 @@ export const getAddressBook = (coinType: Coin): AddressBookEntry[] => {
 
 /**
  * Add a new address to the address book
+ * Stores with metadata and triggers QDN sync
  */
 export const addAddress = (
   entry: Omit<AddressBookEntry, 'id' | 'createdAt'>
@@ -75,11 +101,18 @@ export const addAddress = (
     // Add new entry
     const updatedAddresses = [...existingAddresses, newEntry];
 
-    // Save to localStorage
+    // Save to localStorage with metadata
     const key = getStorageKey(entry.coinType);
-    localStorage.setItem(key, JSON.stringify(updatedAddresses));
+    const storageData: AddressBookLocalStorage = {
+      entries: updatedAddresses,
+      lastUpdated: Date.now(),
+    };
+    localStorage.setItem(key, JSON.stringify(storageData));
 
     console.log(`Address Book: Added ${entry.name} for ${entry.coinType}`);
+
+    // Trigger QDN sync (debounced, async, don't wait)
+    debouncedPublishToQDN(entry.coinType, updatedAddresses);
 
     return newEntry;
   } catch (error) {
@@ -91,6 +124,7 @@ export const addAddress = (
 /**
  * Update an existing address in the address book
  * Returns the updated entry or null if not found
+ * Stores with metadata and triggers QDN sync
  */
 export const updateAddress = (
   id: string,
@@ -128,11 +162,18 @@ export const updateAddress = (
 
     addresses[index] = updatedEntry;
 
-    // Save to localStorage
+    // Save to localStorage with metadata
     const key = getStorageKey(coinType);
-    localStorage.setItem(key, JSON.stringify(addresses));
+    const storageData: AddressBookLocalStorage = {
+      entries: addresses,
+      lastUpdated: Date.now(),
+    };
+    localStorage.setItem(key, JSON.stringify(storageData));
 
     console.log(`Address Book: Updated ${updatedEntry.name} for ${coinType}`);
+
+    // Trigger QDN sync (debounced, async, don't wait)
+    debouncedPublishToQDN(coinType, addresses);
 
     return updatedEntry;
   } catch (error) {
@@ -144,6 +185,7 @@ export const updateAddress = (
 /**
  * Delete an address from the address book
  * Returns true if deleted, false if not found
+ * Stores with metadata and triggers QDN sync
  */
 export const deleteAddress = (id: string, coinType: Coin): boolean => {
   try {
@@ -161,11 +203,19 @@ export const deleteAddress = (id: string, coinType: Coin): boolean => {
     // Remove the entry
     addresses.splice(index, 1);
 
-    // Save to localStorage
+    // Save to localStorage with metadata
     const key = getStorageKey(coinType);
-    localStorage.setItem(key, JSON.stringify(addresses));
+    const storageData: AddressBookLocalStorage = {
+      entries: addresses,
+      lastUpdated: Date.now(),
+    };
+
+    localStorage.setItem(key, JSON.stringify(storageData));
 
     console.log(`Address Book: Deleted entry for ${coinType}`);
+
+    // Trigger QDN sync (debounced, async, don't wait)
+    debouncedPublishToQDN(coinType, addresses);
 
     return true;
   } catch (error) {
@@ -198,7 +248,6 @@ export const searchAddresses = (
       entry.note.toLowerCase().includes(lowerQuery)
     );
 
-    // Results are already sorted from getAddressBook
     return filtered;
   } catch (error) {
     console.error('Address Book: Error searching addresses', error);
