@@ -1702,7 +1702,7 @@ export default function QortalWallet() {
                             return (
                               <Box>
                                 <Trans
-                                  i18nKey="group_invite"
+                                  i18nKey="message.group_actions.group_invite"
                                   values={{
                                     invitee: row?.invitee,
                                     groupId: row?.groupId,
