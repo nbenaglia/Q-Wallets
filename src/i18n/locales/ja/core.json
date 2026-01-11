@@ -44,6 +44,7 @@
   "address_book_deleted": "アドレスが正常に削除されました",
   "address_book_copy": "アドレスをコピー",
   "address_book_copied": "アドレスをクリップボードにコピーしました",
+  "address_book_sync_qdn": "QDNに保存",
   "amount": "金額",
   "balance": "残高:",
   "balance_available": "利用可能残高:",
@@ -139,6 +140,9 @@
       "recipient_required": "受取人は必須です",
       "recipient_too_short": "受取人のアドレスが短すぎます",
       "something_went_wrong": "問題が発生しました。もう一度お試しください。"
+    },
+    "success": {
+      "qdn_sync": "{{coinType}}アドレス帳がQDNに正常に同期されました"
     }
   },
   "page": {

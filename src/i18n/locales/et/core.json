@@ -44,6 +44,7 @@
   "address_book_deleted": "aadress kustutatud edukalt",
   "address_book_copy": "kopeeri aadress",
   "address_book_copied": "aadress kopeeritud lõikelauale",
+  "address_book_sync_qdn": "salvesta QDN-i",
   "amount": "summa",
   "balance": "jääk:",
   "balance_available": "saadaval olev jääk:",
@@ -138,6 +139,9 @@
       "recipient_required": "Saaja on kohustuslik",
       "recipient_too_short": "Saaja aadress on liiga lühike",
       "something_went_wrong": "Midagi läks valesti. Palun proovi uuesti."
+    },
+    "success": {
+      "qdn_sync": "{{coinType}} aadressiraamat edukalt sünkroonitud QDN-iga"
     }
   },
   "page": {

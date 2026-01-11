@@ -44,6 +44,7 @@
   "address_book_deleted": "تم حذف العنوان بنجاح",
   "address_book_copy": "نسخ العنوان",
   "address_book_copied": "تم نسخ العنوان إلى الحافظة",
+  "address_book_sync_qdn": "حفظ في QDN",
   "amount": "المبلغ",
   "balance": "الرصيد:",
   "balance_available": "الرصيد المتاح:",
@@ -138,6 +139,9 @@
       "recipient_required": "المستلم مطلوب",
       "recipient_too_short": "عنوان المستلم قصير جدًا",
       "something_went_wrong": "حدث خطأ ما. يُرجى المحاولة مرة أخرى."
+    },
+    "success": {
+      "qdn_sync": "تمت مزامنة دفتر العناوين {{coinType}} بنجاح مع QDN"
     }
   },
   "page": {

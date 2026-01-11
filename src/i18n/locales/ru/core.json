@@ -44,6 +44,7 @@
   "address_book_deleted": "адрес успешно удалён",
   "address_book_copy": "скопировать адрес",
   "address_book_copied": "адрес скопирован в буфер обмена",
+  "address_book_sync_qdn": "сохранить в QDN",
   "amount": "сумма",
   "balance": "баланс:",
   "balance_available": "доступный баланс:",
@@ -139,6 +140,9 @@
       "recipient_required": "Получатель обязателен",
       "recipient_too_short": "Адрес получателя слишком короткий",
       "something_went_wrong": "Что-то пошло не так. Пожалуйста, попробуйте ещё раз."
+    },
+    "success": {
+      "qdn_sync": "адресная книга {{coinType}} успешно синхронизирована с QDN"
     }
   },
   "page": {

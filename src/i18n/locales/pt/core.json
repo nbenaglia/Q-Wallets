@@ -44,6 +44,7 @@
   "address_book_deleted": "endereço excluído com sucesso",
   "address_book_copy": "copiar endereço",
   "address_book_copied": "endereço copiado para a área de transferência",
+  "address_book_sync_qdn": "salvar no QDN",
   "amount": "valor",
   "balance": "saldo:",
   "balance_available": "saldo disponível:",
@@ -139,6 +140,9 @@
       "recipient_required": "Destinatário obrigatório",
       "recipient_too_short": "Endereço do destinatário muito curto",
       "something_went_wrong": "Algo deu errado. Tente novamente."
+    },
+    "success": {
+      "qdn_sync": "catálogo de endereços {{coinType}} sincronizado com sucesso no QDN"
     }
   },
   "page": {

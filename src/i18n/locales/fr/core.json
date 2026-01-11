@@ -44,6 +44,7 @@
   "address_book_deleted": "adresse supprimée avec succès",
   "address_book_copy": "copier l'adresse",
   "address_book_copied": "adresse copiée dans le presse-papiers",
+  "address_book_sync_qdn": "enregistrer sur QDN",
   "amount": "montant",
   "balance": "solde :",
   "balance_available": "solde disponible :",
@@ -137,7 +138,10 @@
       "recipient_not_found": "Destinataire introuvable",
       "recipient_required": "Destinataire requis",
       "recipient_too_short": "Adresse du destinataire trop courte",
-      "something_went_wrong": "Une erreur s’est produite. Veuillez réessayer."
+      "something_went_wrong": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "success": {
+      "qdn_sync": "carnet d'adresses {{coinType}} synchronisé avec succès sur QDN"
     }
   },
   "page": {

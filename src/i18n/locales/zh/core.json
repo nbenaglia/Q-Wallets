@@ -44,6 +44,7 @@
   "address_book_deleted": "地址删除成功",
   "address_book_copy": "复制地址",
   "address_book_copied": "地址已复制到剪贴板",
+  "address_book_sync_qdn": "保存到QDN",
   "amount": "金额",
   "balance": "余额：",
   "balance_available": "可用余额：",
@@ -137,8 +138,11 @@
       "recipient_lookup_failed": "查询失败",
       "recipient_not_found": "未找到收件人",
       "recipient_required": "收件人不能为空",
-      "recipient_too_short": "收件人地址过短",      
+      "recipient_too_short": "收件人地址过短",
       "something_went_wrong": "发生错误。请重试。"
+    },
+    "success": {
+      "qdn_sync": "{{coinType}}地址簿已成功同步至QDN"
     }
   },
   "page": {

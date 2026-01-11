@@ -44,6 +44,7 @@
   "address_book_deleted": "Adresse erfolgreich gelöscht",
   "address_book_copy": "Adresse kopieren",
   "address_book_copied": "Adresse in Zwischenablage kopiert",
+  "address_book_sync_qdn": "auf QDN speichern",
   "amount": "Betrag",
   "balance": "Guthaben:",
   "balance_available": "Verfügbares Guthaben:",
@@ -138,6 +139,9 @@
       "recipient_required": "Empfänger erforderlich",
       "recipient_too_short": "Empfängeradresse ist zu kurz",
       "something_went_wrong": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "success": {
+      "qdn_sync": "{{coinType}} Adressbuch erfolgreich mit QDN synchronisiert"
     }
   },
   "page": {
