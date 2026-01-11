@@ -11,9 +11,11 @@ import {
   Button,
   useTheme,
   useMediaQuery,
+  Snackbar,
+  Alert,
 } from '@mui/material';
-import { Close, Add } from '@mui/icons-material';
-import { Coin } from 'qapp-core';
+import { Close, Add, Save } from '@mui/icons-material';
+import { Coin, useGlobal } from 'qapp-core';
 import { useTranslation } from 'react-i18next';
 import { Transition } from '../../styles/page-styles';
 import { AddressBookEntry } from '../../utils/Types';
@@ -24,6 +26,7 @@ import {
   addAddress,
   updateAddress,
 } from '../../utils/addressBookStorage';
+import { publishToQDN } from '../../utils/addressBookQDN';
 import { AddressBookTable } from './AddressBookTable';
 import { AddressFormDialog } from './AddressFormDialog';
 import { DeleteConfirmationDialog } from './DeleteConfirmationDialog';
@@ -57,12 +60,20 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(ADDRESSBOOK_ROWS_PER_PAGE);
   const [saveError, setSaveError] = useState<string>(EMPTY_STRING);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [hasUnsyncedChanges, setHasUnsyncedChanges] = useState(false);
+  const [showSyncSuccess, setShowSyncSuccess] = useState(false);
+
+  // Get authenticated username for QDN sync
+  const userName = useGlobal().auth.name;
 
   // Load entries when dialog opens or coinType changes
   useEffect(() => {
     if (open) {
       setPage(0);
       loadEntries();
+      // Reset unsynced changes flag when dialog opens
+      setHasUnsyncedChanges(false);
     }
   }, [open, coinType]);
 
@@ -116,6 +127,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       loadEntries();
       setOpenDeleteConfirm(false);
       setDeletingEntry(undefined);
+      setHasUnsyncedChanges(true);
 
       // Adjust page if we deleted the last item on the current page
       const newTotalEntries = entries.length - 1;
@@ -148,6 +160,7 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
       setOpenForm(false);
       setEditingEntry(undefined);
       setSaveError(EMPTY_STRING);
+      setHasUnsyncedChanges(true);
     } catch (error: any) {
       console.error('Error saving address:', error);
       // Set the error message to display in the form
@@ -184,6 +197,31 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
   const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleSyncToQDN = async () => {
+    setIsSyncing(true);
+
+    try {
+      const currentEntries = getAddressBook(coinType);
+      await publishToQDN(coinType, currentEntries, userName || undefined);
+
+      // Show success notification
+      console.log(`Address Book: Successfully synced ${coinType} to QDN`);
+      // Reset unsynced changes flag after successful sync
+      setHasUnsyncedChanges(false);
+      // Show success snackbar
+      setShowSyncSuccess(true);
+    } catch (error) {
+      console.error('Failed to sync to QDN:', error);
+      // Optional: Show error notification to user
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleCloseSyncSuccess = () => {
+    setShowSyncSuccess(false);
   };
 
   return (
@@ -229,8 +267,27 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
               sx={{ mb: 3 }}
             />
 
-            {/* Add New Button */}
-            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+            {/* QDN Sync and Add New Buttons */}
+            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+              <Button
+                startIcon={<Save />}
+                onClick={handleSyncToQDN}
+                disabled={isSyncing || !hasUnsyncedChanges}
+                sx={{
+                  backgroundColor: '#4caf50',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: '#45a049',
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#a5d6a7',
+                    color: 'white',
+                  },
+                }}
+              >
+                {t('core:address_book_sync_qdn', { postProcess: 'capitalizeFirstChar' })}
+                {isSyncing && '...'}
+              </Button>
               <Button
                 variant="contained"
                 startIcon={<Add />}
@@ -299,6 +356,22 @@ export const AddressBookDialog: React.FC<AddressBookDialogProps> = ({
         onConfirm={handleDeleteConfirm}
         entryName={deletingEntry?.name || EMPTY_STRING}
       />
+
+      {/* QDN Sync Success Notification */}
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={showSyncSuccess}
+        autoHideDuration={4000}
+        onClose={handleCloseSyncSuccess}
+      >
+        <Alert onClose={handleCloseSyncSuccess} severity="success" sx={{ width: '100%' }}>
+          {t('core:message.success.qdn_sync', {
+            coinType: coinType,
+            defaultValue: `Successfully synced ${coinType} address book to QDN`,
+            postProcess: 'capitalizeFirstChar',
+          })}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

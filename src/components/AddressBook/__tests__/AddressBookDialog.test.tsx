@@ -13,8 +13,32 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
+// Mock qapp-core useGlobal hook
+vi.mock('qapp-core', () => ({
+  Coin: {
+    BTC: 'BTC',
+    DOGE: 'DOGE',
+    LTC: 'LTC',
+    RVN: 'RVN',
+    DGB: 'DGB',
+    QORT: 'QORT',
+    ARRR: 'ARRR',
+  },
+  useGlobal: () => ({
+    auth: {
+      name: 'testuser',
+      address: 'testaddress',
+    },
+  }),
+}));
+
 // Mock the storage module
 vi.mock('../../../utils/addressBookStorage');
+
+// Mock QDN utilities
+vi.mock('../../../utils/addressBookQDN', () => ({
+  publishToQDN: vi.fn().mockResolvedValue(undefined),
+}));
 
 // Mock child components to simplify testing
 vi.mock('../AddressBookTable', () => ({

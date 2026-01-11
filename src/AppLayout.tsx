@@ -124,13 +124,13 @@ export default function AppLayout() {
   // Sync address books from QDN on app startup
   useEffect(() => {
     // Only sync if user is authenticated
-    if (address) {
-      syncAllAddressBooksOnStartup().catch((err) => {
+    if (address && name) {
+      syncAllAddressBooksOnStartup(name).catch((err) => {
         console.error('Failed to sync address books on startup:', err);
         // App continues to work with localStorage only
       });
     }
-  }, [address]);
+  }, [address, name]);
 
   type NavHeader = { kind: 'header'; title: string };
   type NavSegment = { segment: string; title: string; icon: React.ReactNode };

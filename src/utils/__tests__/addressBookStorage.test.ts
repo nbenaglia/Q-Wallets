@@ -34,7 +34,7 @@ describe('addressBookStorage', () => {
         coinType: Coin.BTC,
       };
 
-      const added = addAddress(entry);
+      addAddress(entry);
       const result = getAddressBook(Coin.BTC);
 
       expect(result).toHaveLength(1);

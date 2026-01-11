@@ -7,7 +7,6 @@ import {
   deleteAddress,
   searchAddresses,
 } from '../../../utils/addressBookStorage';
-import type { AddressBookEntry } from '../../../utils/Types';
 
 /**
  * Integration tests for the Address Book feature
@@ -85,7 +84,7 @@ describe('AddressBook Integration Tests', () => {
 
     it('should allow deleting an address', () => {
       // Add two addresses
-      const alice = addAddress({
+      addAddress({
         name: 'Alice',
         address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
         note: '',
