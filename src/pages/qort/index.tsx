@@ -1705,7 +1705,7 @@ export default function QortalWallet() {
                                   i18nKey="message.group_actions.group_invite"
                                   values={{
                                     invitee: row?.invitee,
-                                    groupId: row?.groupId,
+                                    id: row?.groupId,
                                   }}
                                   components={{
                                     blue: (
