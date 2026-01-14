@@ -110,7 +110,7 @@
     },
     "group_actions": {
       "add_group_admin": "nuovo amministratore: {{ member }} ID: {{ id }}",
-      "cancel_group_ban": "sbanito: {{ member }} ID: {{ id }}",
+      "cancel_group_ban": "debannato: {{ member }} ID: {{ id }}",
       "reference": "RIF: {{ reference }}",
       "create_group": "nome del gruppo: {{ groupName }} ID: {{ id }}",
       "group_ban": "bannato: {{ offender }} ID: {{ id }}",
