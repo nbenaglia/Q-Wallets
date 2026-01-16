@@ -202,6 +202,20 @@ export default function DigibyteWallet() {
   const [openSendDgbError, setOpenSendDgbError] = useState(false);
   const [openDgbAddressBook, setOpenDgbAddressBook] = useState(false);
 
+  const maxSendableDbgCoin = () => {
+    // manage the correct round up
+    const value = (walletBalanceDgb - (dgbFee * 1000) / 1e8)
+      .toFixed(DECIMAL_ROUND_UP);
+    const [integer, decimal = ''] = value.split('.');
+    const truncated = decimal
+      .substring(0, DECIMAL_ROUND_UP)
+      .padEnd(DECIMAL_ROUND_UP, '0');
+    let truncatedMaxSendableDgbCoin: number = parseFloat(
+      `${integer}.${truncated}`
+    );
+    return truncatedMaxSendableDgbCoin;
+  };
+
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - transactionsDgb.length)
