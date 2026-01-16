@@ -6,8 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { epochToAgo, timeoutDelay, cropString, copyToClipboard } from '../../common/functions';
-import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
+import {
+  epochToAgo,
+  timeoutDelay,
+  cropString,
+  copyToClipboard,
+} from '../../common/functions';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -73,6 +77,7 @@ import {
 } from '../../styles/page-styles';
 import { Coin } from 'qapp-core';
 import { validateBtcAddress } from '../../utils/addressValidation';
+import { AddressBookDialog } from '../../components/AddressBook/AddressBookDialog';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -182,9 +187,22 @@ export default function BitcoinWallet() {
   const [walletBalanceError, setWalletBalanceError] = useState<string | null>(
     null
   );
-
   const btcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(DECIMAL_ROUND_UP);
   const estimatedFeeCalculated = +btcFeeCalculated * BTC_FEE;
+
+  const maxSendableBtcCoin = () => {
+    // manage the correct round up
+    const value = (walletBalanceBtc - estimatedFeeCalculated).toString();
+    const [integer, decimal = ''] = value.split('.');
+    const truncated = decimal
+      .substring(0, DECIMAL_ROUND_UP)
+      .padEnd(DECIMAL_ROUND_UP, '0');
+    let truncatedMaxSendableBtcCoin: number = parseFloat(
+      `${integer}.${truncated}`
+    );
+    return truncatedMaxSendableBtcCoin;
+  };
+
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - transactionsBtc.length)
@@ -387,12 +405,11 @@ export default function BitcoinWallet() {
     setLoadingRefreshBtc(false);
   };
 
-  const handleSendMaxBtc = () => {
-    const maxBtcAmount = +walletBalanceBtc - estimatedFeeCalculated;
-    if (maxBtcAmount <= 0) {
+  const handleSendMaxBtc = () => {    
+    if (maxSendableBtcCoin() <= 0) {
       setBtcAmount(0);
     } else {
-      setBtcAmount(maxBtcAmount);
+      setBtcAmount(maxSendableBtcCoin());
     }
   };
 
@@ -547,7 +564,9 @@ export default function BitcoinWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(input.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -568,7 +587,9 @@ export default function BitcoinWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(output.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -601,22 +622,33 @@ export default function BitcoinWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box sx={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        +
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box sx={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box sx={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        -
+                        {(Number(row?.feeAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        -
+                        {(Number(row?.feeAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     )}
                   </StyledTableCell>
