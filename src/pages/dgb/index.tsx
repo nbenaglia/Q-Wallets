@@ -422,14 +422,11 @@ export default function DigibyteWallet() {
     setLoadingRefreshDgb(false);
   };
 
-  const handleSendMaxDgb = () => {
-    const maxDgbAmount = parseFloat(
-      (walletBalanceDgb - (dgbFee * 1000) / 1e8).toFixed(DECIMAL_ROUND_UP)
-    );
-    if (maxDgbAmount <= 0) {
+  const handleSendMaxDgb = () => {   
+    if (maxSendableDbgCoin() <= 0) {
       setDgbAmount(0);
     } else {
-      setDgbAmount(maxDgbAmount);
+      setDgbAmount(maxSendableDbgCoin());
     }
   };
 
