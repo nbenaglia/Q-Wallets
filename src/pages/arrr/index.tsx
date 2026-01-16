@@ -202,6 +202,19 @@ export default function PirateWallet() {
   const [openArrrAddressBook, setOpenArrrAddressBook] = useState(false);
   const [_retry, setRetry] = useState(false);
 
+  const maxSendableArrrCoin = () => {
+    // manage the correct round up
+    const value = (walletBalanceArrr - ARRR_FEE).toString();
+    const [integer, decimal = ''] = value.split('.');
+    const truncated = decimal
+      .substring(0, DECIMAL_ROUND_UP)
+      .padEnd(DECIMAL_ROUND_UP, '0');
+    let truncatedMaxSendableArrrCoin: number = parseFloat(
+      `${integer}.${truncated}`
+    );
+    return truncatedMaxSendableArrrCoin;
+  };
+
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - transactionsArrr.length)
@@ -274,13 +287,10 @@ export default function PirateWallet() {
   };
 
   const handleSendMaxArrr = () => {
-    let maxArrrAmount = 0;
-    let WalletBalanceArrr = parseFloat(walletBalanceArrr);
-    maxArrrAmount = WalletBalanceArrr - ARRR_FEE;
-    if (maxArrrAmount <= 0) {
+    if (maxSendableArrrCoin() <= 0) {
       setArrrAmount(0);
     } else {
-      setArrrAmount(maxArrrAmount);
+      setArrrAmount(maxSendableArrrCoin());
     }
   };
 
@@ -729,7 +739,9 @@ export default function PirateWallet() {
                           {cropString(input.address)}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(input.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -750,7 +762,9 @@ export default function PirateWallet() {
                           {cropString(output.address)}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(output.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -786,18 +800,26 @@ export default function PirateWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        +
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        -
+                        {(Number(row?.feeAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box></Box>
@@ -1133,7 +1155,7 @@ export default function PirateWallet() {
             align="center"
             sx={{ color: 'text.primary', fontWeight: 700 }}
           >
-            {(walletBalanceArrr - 0.0001).toFixed(DECIMAL_ROUND_UP) + ' ARRR'}
+            {(walletBalanceArrr - ARRR_FEE).toFixed(DECIMAL_ROUND_UP) + ' ARRR'}
           </Typography>
           <Box style={{ marginInlineStart: '15px' }}>
             <Button
@@ -1172,7 +1194,7 @@ export default function PirateWallet() {
             {...({ label: 'Amount (ARRR)' } as any)}
             fullWidth
             isAllowed={(values) => {
-              const maxArrrCoin = walletBalanceArrr - 0.0001;
+              const maxArrrCoin = walletBalanceArrr - ARRR_FEE;
               const { formattedValue, floatValue } = values;
               return (
                 formattedValue === EMPTY_STRING ||
