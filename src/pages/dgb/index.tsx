@@ -209,8 +209,7 @@ export default function DigibyteWallet() {
   const maxSendableDbgCoin = () => {
     // manage the correct round up
     const value = (walletBalanceDgb - (dgbFee * 1000) / 1e8)
-      .toFixed(DECIMAL_ROUND_UP)
-      .toString();
+      .toFixed(DECIMAL_ROUND_UP);
     const [integer, decimal = ''] = value.split('.');
     const truncated = decimal
       .substring(0, DECIMAL_ROUND_UP)
