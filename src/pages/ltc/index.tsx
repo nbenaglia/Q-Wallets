@@ -6,7 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { epochToAgo, timeoutDelay, cropString, copyToClipboard } from '../../common/functions';
+import {
+  epochToAgo,
+  timeoutDelay,
+  cropString,
+  copyToClipboard,
+} from '../../common/functions';
 import { useTheme } from '@mui/material/styles';
 import {
   Alert,
@@ -184,6 +189,19 @@ export default function LitecoinWallet() {
 
   const ltcFeeCalculated = +(+inputFee / 1000 / 1e8).toFixed(DECIMAL_ROUND_UP);
   const estimatedFeeCalculated = +ltcFeeCalculated * LTC_FEE;
+
+  const maxSendableLtcCoin = () => {
+    // manage the correct round up
+    const value = (walletBalanceLtc - estimatedFeeCalculated).toString();
+    const [integer, decimal = ''] = value.split('.');
+    const truncated = decimal
+      .substring(0, DECIMAL_ROUND_UP)
+      .padEnd(DECIMAL_ROUND_UP, '0');
+    let truncatedMaxSendableLtcCoin: number = parseFloat(
+      `${integer}.${truncated}`
+    );
+    return truncatedMaxSendableLtcCoin;
+  };
 
   const emptyRows =
     page > 0
@@ -381,11 +399,10 @@ export default function LitecoinWallet() {
   };
 
   const handleSendMaxLtc = () => {
-    const maxLtcAmount = +walletBalanceLtc - estimatedFeeCalculated;
-    if (maxLtcAmount <= 0) {
+    if (maxSendableLtcCoin() <= 0) {
       setLtcAmount(0);
     } else {
-      setLtcAmount(maxLtcAmount);
+      setLtcAmount(maxSendableLtcCoin());
     }
   };
 
@@ -541,7 +558,9 @@ export default function LitecoinWallet() {
                           {input.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(input.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(input.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -562,7 +581,9 @@ export default function LitecoinWallet() {
                           {output.address}
                         </span>
                         <span style={{ flex: 1, textAlign: 'right' }}>
-                          {(Number(output.amount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                          {(Number(output.amount) / 1e8).toFixed(
+                            DECIMAL_ROUND_UP
+                          )}
                         </span>
                       </Box>
                     ))}
@@ -595,22 +616,33 @@ export default function LitecoinWallet() {
                   <StyledTableCell style={{ width: 'auto' }} align="left">
                     {row?.totalAmount > 0 ? (
                       <Box style={{ color: theme.palette.success.main }}>
-                        +{(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        +
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box style={{ color: theme.palette.error.main }}>
-                        {(Number(row?.totalAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        {(Number(row?.totalAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     )}
                   </StyledTableCell>
                   <StyledTableCell style={{ width: 'auto' }} align="right">
                     {row?.totalAmount <= 0 ? (
                       <Box style={{ color: theme.palette.error.main }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        -
+                        {(Number(row?.feeAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     ) : (
                       <Box style={{ color: 'grey' }}>
-                        -{(Number(row?.feeAmount) / 1e8).toFixed(DECIMAL_ROUND_UP)}
+                        -
+                        {(Number(row?.feeAmount) / 1e8).toFixed(
+                          DECIMAL_ROUND_UP
+                        )}
                       </Box>
                     )}
                   </StyledTableCell>
