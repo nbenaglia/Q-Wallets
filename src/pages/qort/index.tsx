@@ -2574,7 +2574,7 @@ export default function QortalWallet() {
                       )}
                     </StyledTableCell>
                     <StyledTableCell style={{ width: 'auto' }} align="left">
-                      {row?.sharePercent.startsWith('-') ? (
+                      {row?.sharePercent?.startsWith('-') ? (
                         <Box
                           style={{
                             color: theme.palette.error.main,
@@ -2929,7 +2929,7 @@ export default function QortalWallet() {
                           } else if (row?.type === 'REWARD_SHARE') {
                             {
                               row?.sharePercent &&
-                              row?.sharePercent.startsWith('-') ? (
+                              row?.sharePercent?.startsWith('-') ? (
                                 <Box
                                   style={{
                                     color: theme.palette.error.main,
