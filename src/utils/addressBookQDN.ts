@@ -1,4 +1,4 @@
-import { base64UTF8ToObject, Coin, objectToBase64UTF8 } from 'qapp-core';
+import { base64ToObject, Coin, objectToBase64 } from 'qapp-core';
 import { AddressBookEntry } from './Types';
 import { getAddressBook } from './addressBookStorage';
 
@@ -96,7 +96,7 @@ async function publishToQDN(
     };
 
     // Convert to base64 (UTF-8 safe)
-    const base64 = await objectToBase64UTF8(qdnData);
+    const base64 = await objectToBase64(qdnData);
 
     // Encrypt with user's private key
     const encryptedData = await qortalRequest({
@@ -215,7 +215,7 @@ async function fetchFromQDN(
       } catch (jsonError) {
         // Not JSON, assume it's base64-encoded
         try {
-          qdnData = base64UTF8ToObject(decryptedBase64) as AddressBookQDNData;
+          qdnData = base64ToObject(decryptedBase64) as AddressBookQDNData;
         } catch (base64Error) {
           console.error(
             `QDN Sync: Failed to parse decrypted data for ${coinType}:`,
